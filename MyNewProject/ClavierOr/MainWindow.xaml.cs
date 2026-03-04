@@ -1,5 +1,6 @@
 using ClavierOr.Models;
 using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -178,7 +179,12 @@ public partial class MainWindow : Window
         HintTextBlock.Text = string.Empty;
 
         AnswersPanel.Children.Clear();
-        foreach (var reponse in _gameService.GetReponsesForQuestion(question.Id))
+        var reponsesMelangees = _gameService
+            .GetReponsesForQuestion(question.Id)
+            .OrderBy(_ => Random.Shared.Next())
+            .ToList();
+
+        foreach (var reponse in reponsesMelangees)
         {
             var button = new Button
             {
