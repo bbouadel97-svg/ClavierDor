@@ -4,7 +4,53 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Clavier d'Or" Height="760" Width="1120" MinHeight="640" MinWidth="980">
+        Title="Clavier d'Or" Height="760" Width="1120" MinHeight="640" MinWidth="980"
+        Background="#FFF3F6FB"
+        Foreground="#FF1E2A3A">
+    <Window.Resources>
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="PanelBorderBrush" Color="#FFD4DFEE"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF2E6EDB"/>
+        <SolidColorBrush x:Key="PrimaryButtonBorderBrush" Color="#FF245AB3"/>
+        <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="SecondaryButtonBrush" Color="#FFE8EEF8"/>
+        <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#FFC2D2EC"/>
+        <SolidColorBrush x:Key="SecondaryButtonTextBrush" Color="#FF1F2F45"/>
+        <SolidColorBrush x:Key="AnswerButtonBrush" Color="#FFF2F6FD"/>
+        <SolidColorBrush x:Key="AnswerButtonBorderBrush" Color="#FFC4D4EC"/>
+        <SolidColorBrush x:Key="AnswerButtonTextBrush" Color="#FF1D2B3F"/>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryButtonTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SecondaryButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource SecondaryButtonTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SecondaryButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="AnswerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AnswerButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AnswerButtonTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AnswerButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,7 +61,7 @@
 
         <TextBlock Text="Clavier d'Or - Quiz compétitif" FontSize="24" FontWeight="Bold"/>
 
-        <Border Grid.Row="1" Padding="10" Margin="0,10,0,10" BorderBrush="LightGray" BorderThickness="1">
+        <Border Grid.Row="1" Padding="10" Margin="0,10,0,10" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource PanelBackgroundBrush}" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -40,9 +86,9 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                    <Button x:Name="NewGameButton" Content="Nouvelle partie" Width="130" Height="32" Margin="0,0,6,0" Click="NewGameButton_Click"/>
-                    <Button x:Name="ResumeGameButton" Content="Reprendre" Width="90" Height="32" Margin="0,0,6,0" Click="ResumeGameButton_Click"/>
-                    <Button x:Name="SaveButton" Content="Enregistrer" Width="100" Height="32" Click="SaveButton_Click"/>
+                    <Button x:Name="NewGameButton" Content="Nouvelle partie" Width="130" Height="32" Margin="0,0,6,0" Style="{StaticResource PrimaryButtonStyle}" Click="NewGameButton_Click"/>
+                    <Button x:Name="ResumeGameButton" Content="Reprendre" Width="90" Height="32" Margin="0,0,6,0" Style="{StaticResource SecondaryButtonStyle}" Click="ResumeGameButton_Click"/>
+                    <Button x:Name="SaveButton" Content="Enregistrer" Width="100" Height="32" Style="{StaticResource SecondaryButtonStyle}" Click="SaveButton_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -53,7 +99,7 @@
                 <ColumnDefinition Width="1.3*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Padding="12" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,10,0">
+            <Border Grid.Column="0" Padding="12" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource PanelBackgroundBrush}" BorderThickness="1" Margin="0,0,10,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -69,16 +115,16 @@
                     <StackPanel x:Name="AnswersPanel" Grid.Row="2"/>
 
                     <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,12,0,0">
-                        <Button x:Name="HintButton" Content="Indice" Width="90" Height="30" Margin="0,0,8,0" Click="HintButton_Click"/>
-                        <Button x:Name="SkipButton" Content="Changer question" Width="140" Height="30" Margin="0,0,8,0" Click="SkipButton_Click"/>
-                        <Button x:Name="DoubleButton" Content="Double points" Width="110" Height="30" Click="DoubleButton_Click"/>
+                        <Button x:Name="HintButton" Content="Indice" Width="90" Height="30" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Click="HintButton_Click"/>
+                        <Button x:Name="SkipButton" Content="Changer question" Width="140" Height="30" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Click="SkipButton_Click"/>
+                        <Button x:Name="DoubleButton" Content="Double points" Width="110" Height="30" Style="{StaticResource SecondaryButtonStyle}" Click="DoubleButton_Click"/>
                     </StackPanel>
 
-                    <TextBlock x:Name="HintTextBlock" Grid.Row="4" Margin="0,10,0,0" Foreground="DarkSlateBlue" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="HintTextBlock" Grid.Row="4" Margin="0,10,0,0" Foreground="#FF375A92" TextWrapping="Wrap"/>
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1" Padding="12" BorderBrush="LightGray" BorderThickness="1">
+            <Border Grid.Column="1" Padding="12" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource PanelBackgroundBrush}" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -100,8 +146,8 @@
                     </GroupBox>
 
                     <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,4,0,4">
-                        <Button x:Name="FinishButton" Content="Terminer partie" Width="120" Height="30" Margin="0,0,8,0" Click="FinishButton_Click"/>
-                        <Button x:Name="ExportPdfButton" Content="Export PDF" Width="100" Height="30" Click="ExportPdfButton_Click"/>
+                        <Button x:Name="FinishButton" Content="Terminer partie" Width="120" Height="30" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Click="FinishButton_Click"/>
+                        <Button x:Name="ExportPdfButton" Content="Export PDF" Width="100" Height="30" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click"/>
                     </StackPanel>
 
                     <GroupBox Grid.Row="4" Header="Scores sauvegardés">
@@ -118,7 +164,7 @@
             </Border>
         </Grid>
 
-        <StatusBar Grid.Row="3" Margin="0,10,0,0">
+        <StatusBar Grid.Row="3" Margin="0,10,0,0" Background="{StaticResource PanelBackgroundBrush}" BorderBrush="{StaticResource PanelBorderBrush}" BorderThickness="1">
             <StatusBarItem>
                 <TextBlock x:Name="FooterTextBlock" Text="ORM EF Core actif - prêt."/>
             </StatusBarItem>

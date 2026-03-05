@@ -191,7 +191,8 @@ public partial class MainWindow : Window
                 Content = reponse.Texte,
                 Tag = reponse,
                 Margin = new Thickness(0, 0, 0, 8),
-                Height = 34
+                Height = 34,
+                Style = (Style)FindResource("AnswerButtonStyle")
             };
             button.Click += AnswerButton_Click;
             AnswersPanel.Children.Add(button);
