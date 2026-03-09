@@ -98,16 +98,11 @@ public enum DifficulteQuestion
 /// </summary>
 public enum CategorieQuestion
 {
-    Algorithmes,
-    BaseDeDonnees,
-    Web,
-    POO,
-    Securite,
-    DevOps,
-    Architecture,
-    Git,
-    Testing,
-    Performance
+    Anglais,
+    LogiqueRaisonnement,
+    AlgorithmiqueProgrammation,
+    CultureGenerale,
+    MetiersInformatique
 }
 
 /// <summary>

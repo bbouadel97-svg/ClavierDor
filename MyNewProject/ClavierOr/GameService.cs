@@ -28,69 +28,26 @@ public class GameService
             db.Set<Role>().Add(new Role("Mobile", "Spécialiste mobile", 2, 1.05, "Accès aux indices + multiplicateur léger"));
         }
 
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "Quel principe POO permet de cacher l'implémentation ?",
-            DifficulteQuestion.Facile,
-            CategorieQuestion.POO,
-            new Reponse("Encapsulation", true, "L'encapsulation protège l'état interne."),
-            new Reponse("Héritage", false),
-            new Reponse("Polymorphisme", false),
-            new Reponse("Abstraction uniquement", false));
-
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "Quel mot-clé C# permet de définir une classe héritée ?",
-            DifficulteQuestion.Facile,
-            CategorieQuestion.POO,
-            new Reponse(":", true, "On utilise ':' pour hériter en C#."),
-            new Reponse("inherits", false),
-            new Reponse("extends", false),
-            new Reponse("->", false));
-
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "Quelle commande Git combine fetch et merge ?",
-            DifficulteQuestion.Moyen,
-            CategorieQuestion.Git,
-            new Reponse("git pull", true, "git pull = fetch + merge/rebase selon config."),
-            new Reponse("git stash", false),
-            new Reponse("git clone", false),
-            new Reponse("git reset", false));
-
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "En SQL, quelle clause filtre les groupes agrégés ?",
-            DifficulteQuestion.Moyen,
-            CategorieQuestion.BaseDeDonnees,
-            new Reponse("HAVING", true, "HAVING agit après GROUP BY."),
-            new Reponse("WHERE", false),
-            new Reponse("ORDER BY", false),
-            new Reponse("LIMIT", false));
-
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "Quel pattern évite de créer plusieurs instances globales d'une classe ?",
-            DifficulteQuestion.Difficile,
-            CategorieQuestion.Architecture,
-            new Reponse("Singleton", true),
-            new Reponse("Factory", false),
-            new Reponse("Adapter", false),
-            new Reponse("Builder", false));
-
-        AjouterQuestionEtReponsesManquantes(
-            db,
-            "Lors d'une attaque XSS, quel mécanisme est prioritaire ?",
-            DifficulteQuestion.Boss,
-            CategorieQuestion.Securite,
-            new Reponse("Encoder/échapper la sortie HTML", true, "L'encodage output est une défense clé contre XSS."),
-            new Reponse("Désactiver JavaScript", false),
-            new Reponse("Changer le port HTTP", false),
-            new Reponse("Compresser les scripts", false));
-
-        ImporterQuestionsDepuisCsv(db);
+        ReinitialiserQuestionsDepuisCsv(db);
 
         db.SaveChanges();
+    }
+
+    private static void ReinitialiserQuestionsDepuisCsv(ClavierOrContext db)
+    {
+        // Source unique: QUESTIONS.CSV. On vide puis on recharge pour éviter les décalages de catégories.
+        if (db.Reponses.Any())
+        {
+            db.Reponses.RemoveRange(db.Reponses);
+        }
+
+        if (db.Questions.Any())
+        {
+            db.Questions.RemoveRange(db.Questions);
+        }
+
+        db.SaveChanges();
+        ImporterQuestionsDepuisCsv(db);
     }
 
     private static void ImporterQuestionsDepuisCsv(ClavierOrContext db)
@@ -231,12 +188,12 @@ public class GameService
     {
         return theme switch
         {
-            1 => CategorieQuestion.Web,
-            2 => CategorieQuestion.Testing,
-            3 => CategorieQuestion.Algorithmes,
-            4 => CategorieQuestion.Architecture,
-            5 => CategorieQuestion.DevOps,
-            _ => CategorieQuestion.POO
+            1 => CategorieQuestion.Anglais,
+            2 => CategorieQuestion.LogiqueRaisonnement,
+            3 => CategorieQuestion.AlgorithmiqueProgrammation,
+            4 => CategorieQuestion.CultureGenerale,
+            5 => CategorieQuestion.MetiersInformatique,
+            _ => CategorieQuestion.AlgorithmiqueProgrammation
         };
     }
 

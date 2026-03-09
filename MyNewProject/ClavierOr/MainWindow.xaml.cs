@@ -9,6 +9,8 @@ namespace ClavierOr;
 
 public partial class MainWindow : Window
 {
+    private sealed record ThemeItem(CategorieQuestion Value, string Label);
+
     private readonly GameService _gameService = new();
     private Joueur? _currentPlayer;
     private Partie? _currentPartie;
@@ -38,7 +40,16 @@ public partial class MainWindow : Window
 
     private void ChargerThemes()
     {
-        ThemeComboBox.ItemsSource = Enum.GetValues<CategorieQuestion>();
+        ThemeComboBox.ItemsSource = new[]
+        {
+            new ThemeItem(CategorieQuestion.Anglais, "Anglais (vocabulaire et traduction)"),
+            new ThemeItem(CategorieQuestion.LogiqueRaisonnement, "Logique et raisonnement"),
+            new ThemeItem(CategorieQuestion.AlgorithmiqueProgrammation, "Algorithmique et programmation"),
+            new ThemeItem(CategorieQuestion.CultureGenerale, "Culture generale"),
+            new ThemeItem(CategorieQuestion.MetiersInformatique, "Metiers de l'informatique")
+        };
+        ThemeComboBox.DisplayMemberPath = nameof(ThemeItem.Label);
+        ThemeComboBox.SelectedValuePath = nameof(ThemeItem.Value);
         ThemeComboBox.SelectedIndex = -1;
     }
 
@@ -57,7 +68,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (ThemeComboBox.SelectedItem is not CategorieQuestion theme)
+        if (ThemeComboBox.SelectedValue is not CategorieQuestion theme)
         {
             MessageBox.Show("Sélectionnez un thème avant de démarrer.");
             return;
@@ -93,7 +104,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (ThemeComboBox.SelectedItem is not CategorieQuestion theme)
+        if (ThemeComboBox.SelectedValue is not CategorieQuestion theme)
         {
             MessageBox.Show("Sélectionnez un thème avant de reprendre.");
             return;
@@ -299,7 +310,7 @@ public partial class MainWindow : Window
     {
         if (_currentPartie is null)
         {
-            if (ThemeComboBox.SelectedItem is CategorieQuestion theme)
+            if (ThemeComboBox.SelectedValue is CategorieQuestion theme)
             {
                 _currentTheme = theme;
             }
@@ -470,7 +481,7 @@ public partial class MainWindow : Window
 
         var selectedRole = RoleComboBox.SelectedItem as Role;
         var roleName = selectedRole?.Nom ?? string.Empty;
-        var hasThemeSelected = ThemeComboBox.SelectedItem is CategorieQuestion;
+        var hasThemeSelected = ThemeComboBox.SelectedValue is CategorieQuestion;
 
         NewGameButton.IsEnabled = hasThemeSelected;
         ResumeGameButton.IsEnabled = hasThemeSelected;
