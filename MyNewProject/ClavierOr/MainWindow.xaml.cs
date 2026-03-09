@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ClavierOr;
 
@@ -393,6 +394,56 @@ public partial class MainWindow : Window
         HistoryListBox.Items.Insert(0, $"{DateTime.Now:HH:mm:ss} - {texte}");
     }
 
+    private void UpdateProgressionDisplay()
+    {
+        static SolidColorBrush Brush(string color) => (SolidColorBrush)new BrushConverter().ConvertFromString(color)!;
+
+        var pendingBrush = Brush("#FFB0BDCE");
+        var inProgressBrush = Brush("#FFF0A63F");
+        var doneBrush = Brush("#FF4AA169");
+
+        if (_currentPlayer is null)
+        {
+            ReussiteStepDot.Fill = pendingBrush;
+            BossStepDot.Fill = pendingBrush;
+            ClavierOrStepDot.Fill = pendingBrush;
+            ReussiteStepText.Text = "Reussite";
+            BossStepText.Text = "Boss";
+            ClavierOrStepText.Text = "Clavier d'Or";
+            ProgressionInfoTextBlock.Text = "Progression: -";
+            return;
+        }
+
+        var reussite = _currentScore?.PourcentageReussite ?? 0;
+        var etapeReussite = reussite >= 70
+            ? "Validee"
+            : reussite >= 50
+                ? "En cours"
+                : "A travailler";
+
+        var bossObjectif = Math.Max(0, 5 - _currentPlayer.BossVaincus);
+        var etapeBoss = _currentPlayer.BossVaincus > 0
+            ? $"{_currentPlayer.BossVaincus} vaincu(s)"
+            : reussite >= 70
+                ? "Debloque"
+                : "Verrouille";
+
+        var etapeClavierOr = _currentPlayer.EstClavierOr
+            ? "Obtenu"
+            : $"Niv {_currentPlayer.NiveauActuel}/50 + {bossObjectif} boss";
+
+        ReussiteStepDot.Fill = reussite >= 70 ? doneBrush : reussite >= 50 ? inProgressBrush : pendingBrush;
+        BossStepDot.Fill = _currentPlayer.BossVaincus > 0 ? doneBrush : reussite >= 70 ? inProgressBrush : pendingBrush;
+        ClavierOrStepDot.Fill = _currentPlayer.EstClavierOr ? doneBrush : (_currentPlayer.NiveauActuel >= 25 || _currentPlayer.BossVaincus >= 2) ? inProgressBrush : pendingBrush;
+
+        ReussiteStepText.Text = $"Reussite ({etapeReussite})";
+        BossStepText.Text = $"Boss ({etapeBoss})";
+        ClavierOrStepText.Text = _currentPlayer.EstClavierOr ? "Clavier d'Or (Obtenu)" : "Clavier d'Or (En cours)";
+
+        ProgressionInfoTextBlock.Text =
+            $"Progression: Reussite [{etapeReussite}] | Boss [{etapeBoss}] | Clavier d'Or [{etapeClavierOr}]";
+    }
+
     private void RefreshScoresGrid()
     {
         ScoresDataGrid.ItemsSource = _gameService.GetScoresWithPlayers();
@@ -409,6 +460,8 @@ public partial class MainWindow : Window
         ScoreInfoTextBlock.Text = _currentScore is null
             ? "Score: -"
             : $"Score: {_currentScore.Points} | Bonnes: {_currentScore.BonnesReponses} | Mauvaises: {_currentScore.MauvaisesReponses} | Réussite: {_currentScore.PourcentageReussite:F0}%";
+
+        UpdateProgressionDisplay();
 
         if (!hasGame)
         {

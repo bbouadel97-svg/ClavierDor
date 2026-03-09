@@ -139,6 +139,21 @@
                         <TextBlock x:Name="PlayerInfoTextBlock"/>
                         <TextBlock x:Name="ScoreInfoTextBlock" Margin="0,4,0,0"/>
                         <TextBlock x:Name="RoleInfoTextBlock" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <Ellipse x:Name="ReussiteStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                <TextBlock x:Name="ReussiteStepText" Text="Reussite" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <Ellipse x:Name="BossStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                <TextBlock x:Name="BossStepText" Text="Boss" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse x:Name="ClavierOrStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                <TextBlock x:Name="ClavierOrStepText" Text="Clavier d'Or" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock x:Name="ProgressionInfoTextBlock" Margin="0,6,0,0" TextWrapping="Wrap" Foreground="#FF2B4A7C"/>
                     </StackPanel>
 
                     <GroupBox Grid.Row="2" Header="Historique" Margin="0,12,0,8">
