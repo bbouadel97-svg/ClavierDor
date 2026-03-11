@@ -9,6 +9,8 @@ namespace ClavierOr;
 
 public partial class MainWindow : Window
 {
+    private const double StackedLayoutWidthThreshold = 1250;
+
     private sealed record ThemeItem(CategorieQuestion Value, string Label);
 
     private readonly GameService _gameService = new();
@@ -28,6 +30,50 @@ public partial class MainWindow : Window
         ChargerThemes();
         RefreshScoresGrid();
         UpdateUiState();
+        ApplyResponsiveLayout();
+    }
+
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        ApplyResponsiveLayout();
+    }
+
+    private void ApplyResponsiveLayout()
+    {
+        var useStackedLayout = ActualWidth < StackedLayoutWidthThreshold;
+        var answersColumns = ActualWidth >= 1600 ? 4 : ActualWidth >= 1150 ? 3 : ActualWidth >= 850 ? 2 : 1;
+
+        MainContentGrid.RowDefinitions.Clear();
+        MainContentGrid.ColumnDefinitions.Clear();
+        AnswersPanel.Columns = answersColumns;
+
+        if (useStackedLayout)
+        {
+            MainContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            MainContentGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            MainContentGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            Grid.SetColumn(QuestionPanelBorder, 0);
+            Grid.SetRow(QuestionPanelBorder, 0);
+            QuestionPanelBorder.Margin = new Thickness(0, 0, 0, 10);
+
+            Grid.SetColumn(DashboardPanelBorder, 0);
+            Grid.SetRow(DashboardPanelBorder, 1);
+            DashboardPanelBorder.Margin = new Thickness(0);
+            return;
+        }
+
+        MainContentGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+        MainContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2.2, GridUnitType.Star) });
+        MainContentGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.3, GridUnitType.Star) });
+
+        Grid.SetColumn(QuestionPanelBorder, 0);
+        Grid.SetRow(QuestionPanelBorder, 0);
+        QuestionPanelBorder.Margin = new Thickness(0, 0, 10, 0);
+
+        Grid.SetColumn(DashboardPanelBorder, 1);
+        Grid.SetRow(DashboardPanelBorder, 0);
+        DashboardPanelBorder.Margin = new Thickness(0);
     }
 
     private void ChargerRoles()
@@ -196,14 +242,17 @@ public partial class MainWindow : Window
             .OrderBy(_ => Random.Shared.Next())
             .ToList();
 
-        foreach (var reponse in reponsesMelangees)
+        for (var index = 0; index < reponsesMelangees.Count; index++)
         {
+            var reponse = reponsesMelangees[index];
+            var choix = (char)('A' + (index % 26));
+
             var button = new Button
             {
-                Content = reponse.Texte,
+                Content = $"{choix}) {reponse.Texte}",
                 Tag = reponse,
-                Margin = new Thickness(0, 0, 0, 8),
-                Height = 34,
+                Margin = new Thickness(0, 0, 8, 8),
+                MinHeight = 58,
                 Style = (Style)FindResource("AnswerButtonStyle")
             };
             button.Click += AnswerButton_Click;

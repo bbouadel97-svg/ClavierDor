@@ -2,6 +2,8 @@
 
 Application de quiz compétitif en C# / WPF avec persistance SQLite via Entity Framework Core.
 
+Fonctionnalité incluse: progression par étape (`Réussite`, `Affrontement des boss`, `Clavier d'Or`) affichée en temps réel dans le tableau de bord.
+
 ## Contenu de la solution
 
 - `MyNewProject` : petit projet console de démonstration.
