@@ -252,7 +252,10 @@ public partial class MainWindow : Window
                 Content = $"{choix}) {reponse.Texte}",
                 Tag = reponse,
                 Margin = new Thickness(0, 0, 8, 8),
-                MinHeight = 58,
+                Height = 96,
+                MinHeight = 0,
+                MaxHeight = 120,
+                VerticalAlignment = VerticalAlignment.Top,
                 Style = (Style)FindResource("AnswerButtonStyle")
             };
             button.Click += AnswerButton_Click;
@@ -512,6 +515,7 @@ public partial class MainWindow : Window
     private void UpdateUiState()
     {
         var hasGame = _currentPlayer is not null && _currentPartie is not null && _currentScore is not null;
+        HomePanelBorder.Visibility = hasGame ? Visibility.Collapsed : Visibility.Visible;
 
         PlayerInfoTextBlock.Text = _currentPlayer is null
             ? "Joueur: -"
