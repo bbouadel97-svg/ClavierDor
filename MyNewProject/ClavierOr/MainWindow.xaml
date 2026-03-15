@@ -146,8 +146,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
-                        <UniformGrid x:Name="AnswersPanel" Columns="4" Margin="0,0,0,4" VerticalAlignment="Top"/>
+
+                <StackPanel>
                     <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="#FF9DE4FF"/>
                     <TextBlock Text="Quiz Arena" FontSize="34" FontWeight="Bold" Margin="0,2,0,0"/>
                 </StackPanel>
@@ -268,7 +268,7 @@
                                 <TextBlock x:Name="QuestionTextBlock" FontSize="31" FontWeight="Bold" TextWrapping="Wrap" Text="Cliquez sur 'Lancer' pour démarrer." TextAlignment="Center" LineHeight="42"/>
                             </Border>
 
-                            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
                                 <UniformGrid x:Name="AnswersPanel" Columns="4" Margin="0,0,0,4" VerticalAlignment="Top"/>
                             </ScrollViewer>
 
@@ -324,7 +324,46 @@
                             </WrapPanel>
 
                             <GroupBox Grid.Row="4" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFEAF4FF" BorderBrush="#8896D8FF">
-                                <DataGrid x:Name="ScoresDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Background="#223680CC" Foreground="#FFEAF4FF" BorderThickness="0" GridLinesVisibility="Horizontal">
+                                <DataGrid x:Name="ScoresDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Background="#143A86" Foreground="#FFFFFFFF" BorderThickness="0" GridLinesVisibility="Horizontal" RowBackground="#184895" AlternatingRowBackground="#1D53A8" HorizontalGridLinesBrush="#66A9CCFF" VerticalGridLinesBrush="#6693B8E0" AlternationCount="2">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#1B56B0"/>
+                                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                            <Setter Property="BorderBrush" Value="#6AAEDCFF"/>
+                                            <Setter Property="BorderThickness" Value="0,0,0.8,1"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                            <Setter Property="BorderBrush" Value="#55A7CCF5"/>
+                                            <Setter Property="BorderThickness" Value="0.5"/>
+                                            <Setter Property="Padding" Value="6,3"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#2A7FE6"/>
+                                                    <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.CellStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                            <Setter Property="Background" Value="#184895"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="AlternationIndex" Value="1">
+                                                    <Setter Property="Background" Value="#1D53A8"/>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#2A7FE6"/>
+                                                    <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Date" Binding="{Binding DatePartie, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>
                                         <DataGridTextColumn Header="Pseudo" Binding="{Binding Joueur.Pseudo}" Width="*"/>
