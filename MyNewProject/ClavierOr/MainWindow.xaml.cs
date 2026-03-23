@@ -236,8 +236,14 @@ public partial class MainWindow : Window
         StatusTextBlock.Text = $"Thème: {_currentTheme} | Question {_gameService.GetQuestionIndex(_currentPartie.Id) + 1}/{total} | Difficulté: {question.Difficulte}";
         HintTextBlock.Text = string.Empty;
 
+        //BUGFIX: Nettoyer les anciens event handlers pour éviter memory leak
+        foreach (Button oldButton in AnswersPanel.Children.OfType<Button>())
+        {
+            oldButton.Click -= AnswerButton_Click;
+        }
         AnswersPanel.Children.Clear();
-        var reponsesMelangees = _gameService
+
+        var  reponsesMelangees = _gameService
             .GetReponsesForQuestion(question.Id)
             .OrderBy(_ => Random.Shared.Next())
             .ToList();
@@ -330,6 +336,10 @@ public partial class MainWindow : Window
             if (!hasNext)
             {
                 QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
+                foreach (Button oldButton in AnswersPanel.Children.OfType<Button>())
+                {
+                    oldButton.Click -= AnswerButton_Click;
+                }
                 AnswersPanel.Children.Clear();
                 StatusTextBlock.Text = "Fin des questions";
             }

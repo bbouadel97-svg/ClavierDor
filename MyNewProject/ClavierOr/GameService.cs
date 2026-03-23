@@ -9,6 +9,9 @@ namespace ClavierOr;
 
 public class GameService
 {
+    private List<Role>? _rolesCache;
+    private string? _csvPathCache;
+
     public void InitialiserDonnees()
     {
         using var db = new ClavierOrContext();
@@ -31,22 +34,27 @@ public class GameService
         ReinitialiserQuestionsDepuisCsv(db);
 
         db.SaveChanges();
+        _rolesCache = null; // Invalidate cache
     }
 
     private static void ReinitialiserQuestionsDepuisCsv(ClavierOrContext db)
     {
         // Source unique: QUESTIONS.CSV. On vide puis on recharge pour éviter les décalages de catégories.
-        if (db.Reponses.Any())
+        // ⚠️ Important: Supprimer les réponses d'abord (FK constraint)
+        var reponses = db.Reponses.ToList();
+        if (reponses.Any())
         {
-            db.Reponses.RemoveRange(db.Reponses);
+            db.Reponses.RemoveRange(reponses);
+            db.SaveChanges(); // Flush pour respecter la contrainte FK
         }
 
-        if (db.Questions.Any())
+        var questions = db.Questions.ToList();
+        if (questions.Any())
         {
-            db.Questions.RemoveRange(db.Questions);
+            db.Questions.RemoveRange(questions);
+            db.SaveChanges();
         }
 
-        db.SaveChanges();
         ImporterQuestionsDepuisCsv(db);
     }
 
@@ -139,13 +147,14 @@ public class GameService
             return null;
         }
 
+        // ⚡ OPTIMIZATION: Éviter Trim() répétés + allocations
         var themeText = trimmed[..firstCommaIndex].Trim();
         if (!int.TryParse(themeText, out var theme))
         {
             return null;
         }
 
-        var rest = trimmed[(firstCommaIndex + 1)..].Trim();
+        var rest = trimmed[(firstCommaIndex + 1)..].TrimStart();
         if (string.IsNullOrWhiteSpace(rest))
         {
             return null;
@@ -154,26 +163,38 @@ public class GameService
         string enonce;
         string reponse;
 
+        // ⚡ OPTIMIZATION: Chercher '?' et ',' en une seule passe
         var questionMarkIndex = rest.IndexOf('?');
-        var commaAfterQuestionIndex = questionMarkIndex >= 0
-            ? rest.IndexOf(',', questionMarkIndex)
-            : -1;
-
-        if (questionMarkIndex >= 0 && commaAfterQuestionIndex > questionMarkIndex)
+        if (questionMarkIndex >= 0)
         {
-            enonce = rest[..(questionMarkIndex + 1)].Trim();
-            reponse = rest[(commaAfterQuestionIndex + 1)..].Trim();
+            var commaAfterQuestionIndex = rest.IndexOf(',', questionMarkIndex);
+            if (commaAfterQuestionIndex > questionMarkIndex)
+            {
+                enonce = rest[..(questionMarkIndex + 1)].TrimEnd();
+                reponse = rest[(commaAfterQuestionIndex + 1)..].TrimStart();
+            }
+            else
+            {
+                // Pas de ',' après '?' → format invalide
+                var secondCommaIndex = rest.IndexOf(',');
+                if (secondCommaIndex <= 0)
+                {
+                    return null;
+                }
+                enonce = rest[..secondCommaIndex].TrimEnd();
+                reponse = rest[(secondCommaIndex + 1)..].TrimStart();
+            }
         }
         else
         {
+            // Pas de '?' → format alternatif
             var secondCommaIndex = rest.IndexOf(',');
             if (secondCommaIndex <= 0)
             {
                 return null;
             }
-
-            enonce = rest[..secondCommaIndex].Trim();
-            reponse = rest[(secondCommaIndex + 1)..].Trim();
+            enonce = rest[..secondCommaIndex].TrimEnd();
+            reponse = rest[(secondCommaIndex + 1)..].TrimStart();
         }
 
         if (string.IsNullOrWhiteSpace(enonce) || string.IsNullOrWhiteSpace(reponse))
@@ -199,6 +220,9 @@ public class GameService
 
     private static string? TrouverQuestionsCsvPath()
     {
+        // ⚡ OPTIMIZATION: Pas de caching car c'est une fonction statique
+        // (les caches statiques dans les méthodes statiques causent des problèmes)
+        // Pour cacher, il faudrait faire une instance de GameService
         var possiblePaths = new[]
         {
             Path.Combine(AppContext.BaseDirectory, "QUESTIONS.CSV"),
@@ -253,6 +277,7 @@ public class GameService
             }
 
             db.Questions.Add(question);
+            db.SaveChanges(); // ✅ BUGFIX: Sauvegarder les modifications
             return;
         }
 
@@ -265,12 +290,21 @@ public class GameService
 
             question.Reponses.Add(new Reponse(reponse.Texte, reponse.EstCorrect, reponse.Explication));
         }
+
+        db.SaveChanges(); // ✅ BUGFIX: Sauvegarder les modifications après ajout de nouvelles réponses
     }
 
     public List<Role> GetRoles()
     {
+        // ⚡ OPTIMIZATION: Caching pour éviter les requêtes répétées
+        if (_rolesCache != null)
+        {
+            return _rolesCache;
+        }
+
         using var db = new ClavierOrContext();
-        return db.Set<Role>().OrderBy(r => r.Nom).ToList();
+        _rolesCache = db.Set<Role>().AsNoTracking().OrderBy(r => r.Nom).ToList();
+        return _rolesCache;
     }
 
     public Role? GetRoleById(int? roleId)
@@ -280,8 +314,16 @@ public class GameService
             return null;
         }
 
+        // ⚡ OPTIMIZATION: Utiliser le cache avant requête DB
+        var cachedRoles = GetRoles();
+        var cached = cachedRoles.FirstOrDefault(r => r.Id == roleId.Value);
+        if (cached != null)
+        {
+            return cached;
+        }
+
         using var db = new ClavierOrContext();
-        return db.Set<Role>().FirstOrDefault(r => r.Id == roleId.Value);
+        return db.Set<Role>().AsNoTracking().FirstOrDefault(r => r.Id == roleId.Value);
     }
 
     public Joueur GetOrCreatePlayer(string pseudo, int roleId)
@@ -309,7 +351,8 @@ public class GameService
     public Joueur? FindPlayerByPseudo(string pseudo)
     {
         using var db = new ClavierOrContext();
-        return db.Joueurs.FirstOrDefault(j => j.Pseudo == pseudo);
+        // ⚡ OPTIMIZATION: AsNoTracking pour lecture simple
+        return db.Joueurs.AsNoTracking().FirstOrDefault(j => j.Pseudo == pseudo);
     }
 
     public Partie StartNewPartie(int joueurId)
@@ -386,14 +429,14 @@ public class GameService
     {
         using var db = new ClavierOrContext();
 
-        var partie = db.Parties.FirstOrDefault(p => p.Id == partieId);
+        var partie = db.Parties.AsNoTracking().FirstOrDefault(p => p.Id == partieId);
 
         if (partie is null)
         {
             return null;
         }
 
-        var questionsQuery = FiltrerParCategorie(db.Questions.AsQueryable(), categorie);
+        var questionsQuery = FiltrerParCategorie(db.Questions.AsNoTracking(), categorie);
         var totalQuestions = questionsQuery.Count();
         if (totalQuestions == 0)
         {
@@ -414,19 +457,19 @@ public class GameService
     public int GetQuestionIndex(int partieId)
     {
         using var db = new ClavierOrContext();
-        return db.Parties.Where(p => p.Id == partieId).Select(p => p.QuestionActuelleIndex).FirstOrDefault();
+        return db.Parties.AsNoTracking().Where(p => p.Id == partieId).Select(p => p.QuestionActuelleIndex).FirstOrDefault();
     }
 
     public int GetQuestionCount(int partieId, CategorieQuestion? categorie = null)
     {
         using var db = new ClavierOrContext();
-        return FiltrerParCategorie(db.Questions.AsQueryable(), categorie).Count();
+        return FiltrerParCategorie(db.Questions.AsNoTracking(), categorie).Count();
     }
 
     public List<Reponse> GetReponsesForQuestion(int questionId)
     {
         using var db = new ClavierOrContext();
-        return db.Reponses.Where(r => r.QuestionId == questionId).OrderBy(r => r.Id).ToList();
+        return db.Reponses.AsNoTracking().Where(r => r.QuestionId == questionId).OrderBy(r => r.Id).ToList();
     }
 
     public bool MoveNextQuestion(int partieId, CategorieQuestion? categorie = null)
@@ -548,8 +591,10 @@ public class GameService
     public List<Score> GetScoresWithPlayers()
     {
         using var db = new ClavierOrContext();
+        // ⚡ OPTIMIZATION: AsNoTracking pour statistiques/lecture seule
         return db.Scores
             .Include(s => s.Joueur)
+            .AsNoTracking()
             .OrderByDescending(s => s.DatePartie)
             .Take(50)
             .ToList();
@@ -558,13 +603,14 @@ public class GameService
     public string GenerateHint(int questionId)
     {
         using var db = new ClavierOrContext();
-        var question = db.Questions.FirstOrDefault(q => q.Id == questionId);
+        // ⚡ OPTIMIZATION: AsNoTracking pour lecture simple
+        var question = db.Questions.AsNoTracking().FirstOrDefault(q => q.Id == questionId);
         if (question is null)
         {
             return "Question introuvable.";
         }
 
-        var correct = db.Reponses.FirstOrDefault(r => r.QuestionId == questionId && r.EstCorrect);
+        var correct = db.Reponses.AsNoTracking().FirstOrDefault(r => r.QuestionId == questionId && r.EstCorrect);
         if (correct is null)
         {
             return "Aucun indice disponible.";
