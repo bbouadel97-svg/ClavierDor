@@ -6,32 +6,57 @@
         mc:Ignorable="d"
         Title="Clavier d'Or" Height="760" Width="1120" MinHeight="640" MinWidth="980"
         SizeChanged="Window_SizeChanged"
-        Foreground="#FFEAF4FF">
+        Foreground="#FFFFF1F3">
     <Window.Resources>
         <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF081A4A" Offset="0"/>
-            <GradientStop Color="#FF0C2A75" Offset="0.52"/>
-            <GradientStop Color="#FF1A4EC8" Offset="1"/>
+            <GradientStop Color="#FF22070C" Offset="0"/>
+            <GradientStop Color="#FF541019" Offset="0.52"/>
+            <GradientStop Color="#FF9D2232" Offset="1"/>
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#AA071330" Offset="0"/>
-            <GradientStop Color="#AA0D2A72" Offset="1"/>
+            <GradientStop Color="#AA18070B" Offset="0"/>
+            <GradientStop Color="#AA4E111A" Offset="1"/>
         </LinearGradientBrush>
 
         <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#1AFFFFFF"/>
-        <SolidColorBrush x:Key="PanelBorderBrush" Color="#6647BAFF"/>
-        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF00C3FF"/>
-        <SolidColorBrush x:Key="PrimaryButtonBorderBrush" Color="#FF66E0FF"/>
-        <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FF06254D"/>
-        <SolidColorBrush x:Key="SecondaryButtonBrush" Color="#55359CFF"/>
-        <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#88A5DCFF"/>
-        <SolidColorBrush x:Key="SecondaryButtonTextBrush" Color="#FFE7F6FF"/>
-        <SolidColorBrush x:Key="AnswerButtonBrush" Color="#4437AFFF"/>
-        <SolidColorBrush x:Key="AnswerButtonBorderBrush" Color="#AA64D8FF"/>
-        <SolidColorBrush x:Key="AnswerButtonTextBrush" Color="#FFF0FAFF"/>
+        <SolidColorBrush x:Key="PanelBorderBrush" Color="#669B4351"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FFF35D70"/>
+        <SolidColorBrush x:Key="PrimaryButtonBorderBrush" Color="#FFFFA4AF"/>
+        <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FF33060C"/>
+        <SolidColorBrush x:Key="SecondaryButtonBrush" Color="#554D121C"/>
+        <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#88D17A86"/>
+        <SolidColorBrush x:Key="SecondaryButtonTextBrush" Color="#FFFFF1F3"/>
+        <SolidColorBrush x:Key="AnswerButtonBrush" Color="#443C0D16"/>
+        <SolidColorBrush x:Key="AnswerButtonBorderBrush" Color="#AAA95E6C"/>
+        <SolidColorBrush x:Key="AnswerButtonTextBrush" Color="#FFFFF4F5"/>
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FF46202A"/>
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#FFC87886"/>
+        <SolidColorBrush x:Key="ComboItemBackgroundBrush" Color="#FF3A1821"/>
+        <SolidColorBrush x:Key="ComboItemHoverBrush" Color="#FF6D2532"/>
+        <SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#FF8A3140"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#FFFFB2BE"/>
+        <SolidColorBrush x:Key="SoftAccentTextBrush" Color="#FFF4CDD4"/>
+        <SolidColorBrush x:Key="StatusTextBrush" Color="#FFFFA0AF"/>
+        <SolidColorBrush x:Key="HintTextBrush" Color="#FFFFB8C3"/>
+        <SolidColorBrush x:Key="InfoCardBorderBrush" Color="#779F5664"/>
+        <SolidColorBrush x:Key="InfoCardBackgroundBrush" Color="#165B1824"/>
+        <SolidColorBrush x:Key="TipBorderBrush" Color="#66C06E7D"/>
+        <SolidColorBrush x:Key="TipBackgroundBrush" Color="#1D7D2433"/>
+        <SolidColorBrush x:Key="QuestionHighlightBorderBrush" Color="#99DB8A98"/>
+        <SolidColorBrush x:Key="QuestionHighlightBackgroundBrush" Color="#225E1722"/>
+        <SolidColorBrush x:Key="ProgressPendingBrush" Color="#FFC5AAB0"/>
+        <SolidColorBrush x:Key="ProgressPendingStrokeBrush" Color="#FF8D6970"/>
+        <SolidColorBrush x:Key="GroupBorderBrush" Color="#889A6670"/>
+        <SolidColorBrush x:Key="ListBackgroundBrush" Color="#22491723"/>
+        <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="#FF4A1620"/>
+        <SolidColorBrush x:Key="DataGridRowBrush" Color="#FF5B1C29"/>
+        <SolidColorBrush x:Key="DataGridAltRowBrush" Color="#FF6E2433"/>
+        <SolidColorBrush x:Key="DataGridHeaderBrush" Color="#FF7F2A3A"/>
+        <SolidColorBrush x:Key="DataGridGridBrush" Color="#669C6B76"/>
+        <SolidColorBrush x:Key="DataGridSelectionBrush" Color="#FFD24D64"/>
 
-        <DropShadowEffect x:Key="CardShadow" BlurRadius="18" ShadowDepth="0" Color="#CC00153D"/>
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="18" ShadowDepth="0" Color="#CC180207"/>
 
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}"/>
@@ -94,36 +119,36 @@
         </Style>
 
         <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="#FF3A4565"/>
-            <Setter Property="Foreground" Value="#FFEAF4FF"/>
-            <Setter Property="BorderBrush" Value="#FF5F84C4"/>
+            <Setter Property="Background" Value="{StaticResource InputBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="#FFFFF1F3"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="Padding" Value="10,4"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <Style x:Key="InputComboBoxItemStyle" TargetType="ComboBoxItem">
-            <Setter Property="Foreground" Value="#FFEAF4FF"/>
-            <Setter Property="Background" Value="#FF2F3D62"/>
+            <Setter Property="Foreground" Value="#FFFFF1F3"/>
+            <Setter Property="Background" Value="{StaticResource ComboItemBackgroundBrush}"/>
             <Setter Property="Padding" Value="8,4"/>
             <Style.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="#FF3E5D96"/>
+                    <Setter Property="Background" Value="{StaticResource ComboItemHoverBrush}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FF4C75BB"/>
+                    <Setter Property="Background" Value="{StaticResource ComboItemSelectedBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="InputComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Background" Value="#FF3A4565"/>
-            <Setter Property="Foreground" Value="#FFEAF4FF"/>
-            <Setter Property="BorderBrush" Value="#FF5F84C4"/>
+            <Setter Property="Background" Value="{StaticResource InputBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="#FFFFF1F3"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="TextElement.Foreground" Value="#FFEAF4FF"/>
+            <Setter Property="TextElement.Foreground" Value="#FFFFF1F3"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource InputComboBoxItemStyle}"/>
         </Style>
     </Window.Resources>
@@ -148,7 +173,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="#FF9DE4FF"/>
+                    <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentTextBrush}"/>
                     <TextBlock Text="Quiz Arena" FontSize="34" FontWeight="Bold" Margin="0,2,0,0"/>
                 </StackPanel>
 
@@ -162,7 +187,7 @@
 
                         <StackPanel>
                             <TextBlock Text="Bienvenue dans Clavier d'Or" FontSize="28" FontWeight="Bold"/>
-                            <TextBlock Margin="0,6,0,0" FontSize="15" TextWrapping="Wrap" Foreground="#FFD3EBFF"
+                            <TextBlock Margin="0,6,0,0" FontSize="15" TextWrapping="Wrap" Foreground="{StaticResource SoftAccentTextBrush}"
                                        Text="Un quiz évolutif orienté informatique où chaque rôle change votre stratégie. Préparez votre pseudo, choisissez votre thème, puis enchaînez les questions pour progresser jusqu'au rang Clavier d'Or."/>
                         </StackPanel>
 
@@ -173,27 +198,27 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="#7798DEFF" BorderThickness="1" Background="#163D6BB0">
+                            <Border Grid.Column="0" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Comment jouer" FontWeight="Bold" FontSize="15" Foreground="#FF9DE4FF"/>
+                                    <TextBlock Text="Comment jouer" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="1) Choisissez votre rôle et un thème."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="2) Répondez vite et juste pour monter le streak."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="3) Sauvegardez vos scores et suivez votre progression."/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Column="1" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="#7798DEFF" BorderThickness="1" Background="#163D6BB0">
+                            <Border Grid.Column="1" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Rôles spéciaux" FontWeight="Bold" FontSize="15" Foreground="#FF9DE4FF"/>
+                                    <TextBlock Text="Rôles spéciaux" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Mobile: accès aux indices."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Front-End: peut passer une question."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Back-End: un rattrapage automatique en cas d'erreur."/>
                                 </StackPanel>
                             </Border>
 
-                            <Border Grid.Column="2" Padding="12" CornerRadius="14" BorderBrush="#7798DEFF" BorderThickness="1" Background="#163D6BB0">
+                            <Border Grid.Column="2" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Objectif Clavier d'Or" FontWeight="Bold" FontSize="15" Foreground="#FF9DE4FF"/>
+                                    <TextBlock Text="Objectif Clavier d'Or" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Atteignez 70% de réussite pour débloquer les boss."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Accumulez de l'XP pour monter de niveau."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Vainquez des boss pour obtenir le titre final."/>
@@ -201,8 +226,8 @@
                             </Border>
                         </Grid>
 
-                        <Border Grid.Row="2" Margin="0,12,0,0" Padding="10" BorderBrush="#66A6E9FF" BorderThickness="1" CornerRadius="12" Background="#1D4A91CC">
-                            <TextBlock TextWrapping="Wrap" Foreground="#FFEAF4FF" FontWeight="SemiBold"
+                        <Border Grid.Row="2" Margin="0,12,0,0" Padding="10" BorderBrush="{StaticResource TipBorderBrush}" BorderThickness="1" CornerRadius="12" Background="{StaticResource TipBackgroundBrush}">
+                            <TextBlock TextWrapping="Wrap" Foreground="#FFFFF1F3" FontWeight="SemiBold"
                                        Text="Astuce: commencez par un thème que vous maîtrisez, puis activez 'Double points' au bon moment pour maximiser votre score."/>
                         </Border>
                     </Grid>
@@ -262,9 +287,9 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock x:Name="StatusTextBlock" Text="Prêt" FontWeight="SemiBold" FontSize="14" Foreground="#FF95D9FF"/>
+                            <TextBlock x:Name="StatusTextBlock" Text="Prêt" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource StatusTextBrush}"/>
 
-                            <Border Grid.Row="1" Margin="0,12,0,14" Padding="18" BorderBrush="#99A2E5FF" BorderThickness="2" CornerRadius="18" Background="#223D9BFF">
+                            <Border Grid.Row="1" Margin="0,12,0,14" Padding="18" BorderBrush="{StaticResource QuestionHighlightBorderBrush}" BorderThickness="2" CornerRadius="18" Background="{StaticResource QuestionHighlightBackgroundBrush}">
                                 <TextBlock x:Name="QuestionTextBlock" FontSize="31" FontWeight="Bold" TextWrapping="Wrap" Text="Cliquez sur 'Lancer' pour démarrer." TextAlignment="Center" LineHeight="42"/>
                             </Border>
 
@@ -278,7 +303,7 @@
                                 <Button x:Name="DoubleButton" Content="Double points" MinWidth="130" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="DoubleButton_Click"/>
                             </WrapPanel>
 
-                            <TextBlock x:Name="HintTextBlock" Grid.Row="4" Margin="0,8,0,0" Foreground="#FF8DE6FF" TextWrapping="Wrap" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="HintTextBlock" Grid.Row="4" Margin="0,8,0,0" Foreground="{StaticResource HintTextBrush}" TextWrapping="Wrap" FontWeight="SemiBold"/>
                         </Grid>
                     </Border>
 
@@ -292,30 +317,30 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="#FF9DE4FF"/>
+                            <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentTextBrush}"/>
                             <StackPanel Grid.Row="1" Margin="0,8,0,0">
                                 <TextBlock x:Name="PlayerInfoTextBlock"/>
                                 <TextBlock x:Name="ScoreInfoTextBlock" Margin="0,4,0,0"/>
                                 <TextBlock x:Name="RoleInfoTextBlock" Margin="0,4,0,0" TextWrapping="Wrap"/>
                                 <WrapPanel Margin="0,8,0,0">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,12,6" VerticalAlignment="Center">
-                                        <Ellipse x:Name="ReussiteStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                        <Ellipse x:Name="ReussiteStepDot" Width="10" Height="10" Fill="{StaticResource ProgressPendingBrush}" Stroke="{StaticResource ProgressPendingStrokeBrush}" StrokeThickness="1" Margin="0,0,6,0"/>
                                         <TextBlock x:Name="ReussiteStepText" Text="Reussite" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,12,6" VerticalAlignment="Center">
-                                        <Ellipse x:Name="BossStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                        <Ellipse x:Name="BossStepDot" Width="10" Height="10" Fill="{StaticResource ProgressPendingBrush}" Stroke="{StaticResource ProgressPendingStrokeBrush}" StrokeThickness="1" Margin="0,0,6,0"/>
                                         <TextBlock x:Name="BossStepText" Text="Boss" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6" VerticalAlignment="Center">
-                                        <Ellipse x:Name="ClavierOrStepDot" Width="10" Height="10" Fill="#FFB0BDCE" Stroke="#FF7D8CA0" StrokeThickness="1" Margin="0,0,6,0"/>
+                                        <Ellipse x:Name="ClavierOrStepDot" Width="10" Height="10" Fill="{StaticResource ProgressPendingBrush}" Stroke="{StaticResource ProgressPendingStrokeBrush}" StrokeThickness="1" Margin="0,0,6,0"/>
                                         <TextBlock x:Name="ClavierOrStepText" Text="Clavier d'Or" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </WrapPanel>
-                                <TextBlock x:Name="ProgressionInfoTextBlock" Margin="0,6,0,0" TextWrapping="Wrap" Foreground="#FFA8E5FF"/>
+                                <TextBlock x:Name="ProgressionInfoTextBlock" Margin="0,6,0,0" TextWrapping="Wrap" Foreground="{StaticResource SoftAccentTextBrush}"/>
                             </StackPanel>
 
-                            <GroupBox Grid.Row="2" Header="Historique" Margin="0,12,0,8" MinHeight="160" Foreground="#FFEAF4FF" BorderBrush="#8896D8FF">
-                                <ListBox x:Name="HistoryListBox" Background="#223680CC" Foreground="#FFEAF4FF" BorderThickness="0"/>
+                            <GroupBox Grid.Row="2" Header="Historique" Margin="0,12,0,8" MinHeight="160" Foreground="#FFFFF1F3" BorderBrush="{StaticResource GroupBorderBrush}">
+                                <ListBox x:Name="HistoryListBox" Background="{StaticResource ListBackgroundBrush}" Foreground="#FFFFF1F3" BorderThickness="0"/>
                             </GroupBox>
 
                             <WrapPanel Grid.Row="3" Margin="0,4,0,4">
@@ -323,13 +348,13 @@
                                 <Button x:Name="ExportPdfButton" Content="Export PDF" MinWidth="110" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click"/>
                             </WrapPanel>
 
-                            <GroupBox Grid.Row="4" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFEAF4FF" BorderBrush="#8896D8FF">
-                                <DataGrid x:Name="ScoresDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Background="#143A86" Foreground="#FFFFFFFF" BorderThickness="0" GridLinesVisibility="Horizontal" RowBackground="#184895" AlternatingRowBackground="#1D53A8" HorizontalGridLinesBrush="#66A9CCFF" VerticalGridLinesBrush="#6693B8E0" AlternationCount="2">
+                            <GroupBox Grid.Row="4" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFFFF1F3" BorderBrush="{StaticResource GroupBorderBrush}">
+                                <DataGrid x:Name="ScoresDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Background="{StaticResource DataGridBackgroundBrush}" Foreground="#FFFFFFFF" BorderThickness="0" GridLinesVisibility="Horizontal" RowBackground="{StaticResource DataGridRowBrush}" AlternatingRowBackground="{StaticResource DataGridAltRowBrush}" HorizontalGridLinesBrush="{StaticResource DataGridGridBrush}" VerticalGridLinesBrush="{StaticResource DataGridGridBrush}" AlternationCount="2">
                                     <DataGrid.ColumnHeaderStyle>
                                         <Style TargetType="DataGridColumnHeader">
-                                            <Setter Property="Background" Value="#1B56B0"/>
+                                            <Setter Property="Background" Value="{StaticResource DataGridHeaderBrush}"/>
                                             <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                                            <Setter Property="BorderBrush" Value="#6AAEDCFF"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource DataGridGridBrush}"/>
                                             <Setter Property="BorderThickness" Value="0,0,0.8,1"/>
                                             <Setter Property="FontWeight" Value="Bold"/>
                                         </Style>
@@ -338,12 +363,12 @@
                                         <Style TargetType="DataGridCell">
                                             <Setter Property="Background" Value="Transparent"/>
                                             <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                                            <Setter Property="BorderBrush" Value="#55A7CCF5"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource DataGridGridBrush}"/>
                                             <Setter Property="BorderThickness" Value="0.5"/>
                                             <Setter Property="Padding" Value="6,3"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#2A7FE6"/>
+                                                    <Setter Property="Background" Value="{StaticResource DataGridSelectionBrush}"/>
                                                     <Setter Property="Foreground" Value="#FFFFFFFF"/>
                                                 </Trigger>
                                             </Style.Triggers>
@@ -352,13 +377,13 @@
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
                                             <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                                            <Setter Property="Background" Value="#184895"/>
+                                            <Setter Property="Background" Value="{StaticResource DataGridRowBrush}"/>
                                             <Style.Triggers>
                                                 <Trigger Property="AlternationIndex" Value="1">
-                                                    <Setter Property="Background" Value="#1D53A8"/>
+                                                    <Setter Property="Background" Value="{StaticResource DataGridAltRowBrush}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="#2A7FE6"/>
+                                                    <Setter Property="Background" Value="{StaticResource DataGridSelectionBrush}"/>
                                                     <Setter Property="Foreground" Value="#FFFFFFFF"/>
                                                 </Trigger>
                                             </Style.Triggers>

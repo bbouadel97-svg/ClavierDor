@@ -10,7 +10,6 @@ namespace ClavierOr;
 public class GameService
 {
     private List<Role>? _rolesCache;
-    private string? _csvPathCache;
 
     public void InitialiserDonnees()
     {
@@ -528,7 +527,8 @@ public class GameService
             dbPartie.DateFin = partie.DateFin;
             dbPartie.Etat = partie.Etat;
             dbPartie.Mode = partie.Mode;
-            dbPartie.QuestionActuelleIndex = partie.QuestionActuelleIndex;
+                dbPartie.QuestionActuelleIndex = Math.Max(dbPartie.QuestionActuelleIndex, partie.QuestionActuelleIndex);
+                partie.QuestionActuelleIndex = dbPartie.QuestionActuelleIndex;
             dbPartie.StreakActuelle = partie.StreakActuelle;
             dbPartie.MeilleurStreak = partie.MeilleurStreak;
         }
@@ -556,6 +556,15 @@ public class GameService
 
     public void FinishPartie(Joueur joueur, Partie partie, Score score)
     {
+        using var db = new ClavierOrContext();
+
+        var dbPartie = db.Parties.AsNoTracking().FirstOrDefault(p => p.Id == partie.Id);
+        if (dbPartie is null || dbPartie.Etat == EtatPartie.Terminee || dbPartie.Etat == EtatPartie.Abandonnee)
+        {
+            partie.Etat = dbPartie?.Etat ?? partie.Etat;
+            return;
+        }
+
         partie.Terminer();
         score.DatePartie = DateTime.Now;
         score.CalculerPourcentage();

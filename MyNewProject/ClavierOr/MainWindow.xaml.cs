@@ -322,10 +322,6 @@ public partial class MainWindow : Window
             }
 
             var hasNext = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
-            if (hasNext)
-            {
-                _currentPartie.QuestionActuelleIndex++;
-            }
 
             _currentScore.StreakMaximum = Math.Max(_currentScore.StreakMaximum, _currentPartie.MeilleurStreak);
             _currentScore.CalculerPourcentage();
@@ -419,7 +415,6 @@ public partial class MainWindow : Window
 
         if (_gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme))
         {
-            _currentPartie.QuestionActuelleIndex++;
             ChargerQuestionActuelle();
             HintTextBlock.Text = "Question changée grâce au bonus Front-End.";
         }
@@ -471,7 +466,7 @@ public partial class MainWindow : Window
     {
         static SolidColorBrush Brush(string color) => (SolidColorBrush)new BrushConverter().ConvertFromString(color)!;
 
-        var pendingBrush = Brush("#FFB0BDCE");
+        var pendingBrush = Brush("#FFC5AAB0");
         var inProgressBrush = Brush("#FFF0A63F");
         var doneBrush = Brush("#FF4AA169");
 
@@ -525,6 +520,7 @@ public partial class MainWindow : Window
     private void UpdateUiState()
     {
         var hasGame = _currentPlayer is not null && _currentPartie is not null && _currentScore is not null;
+        var hasActiveGame = hasGame && (_currentPartie!.Etat == EtatPartie.EnCours || _currentPartie.Etat == EtatPartie.EnPause);
         HomePanelBorder.Visibility = hasGame ? Visibility.Collapsed : Visibility.Visible;
 
         PlayerInfoTextBlock.Text = _currentPlayer is null
@@ -548,11 +544,11 @@ public partial class MainWindow : Window
 
         NewGameButton.IsEnabled = hasThemeSelected;
         ResumeGameButton.IsEnabled = hasThemeSelected;
-        HintButton.IsEnabled = hasGame && roleName == "Mobile";
-        SkipButton.IsEnabled = hasGame && roleName == "Front-End";
-        DoubleButton.IsEnabled = hasGame;
-        SaveButton.IsEnabled = hasGame;
-        FinishButton.IsEnabled = hasGame;
+        HintButton.IsEnabled = hasActiveGame && roleName == "Mobile";
+        SkipButton.IsEnabled = hasActiveGame && roleName == "Front-End";
+        DoubleButton.IsEnabled = hasActiveGame;
+        SaveButton.IsEnabled = hasActiveGame;
+        FinishButton.IsEnabled = hasActiveGame;
         ExportPdfButton.IsEnabled = hasGame;
     }
 }
