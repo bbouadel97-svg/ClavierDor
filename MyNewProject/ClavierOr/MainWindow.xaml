@@ -6,57 +6,57 @@
         mc:Ignorable="d"
         Title="Clavier d'Or" Height="760" Width="1120" MinHeight="640" MinWidth="980"
         SizeChanged="Window_SizeChanged"
-        Foreground="#FFFFF1F3">
+        Foreground="#FFF1FFF5">
     <Window.Resources>
         <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#FF22070C" Offset="0"/>
-            <GradientStop Color="#FF541019" Offset="0.52"/>
-            <GradientStop Color="#FF9D2232" Offset="1"/>
+            <GradientStop Color="#FF060F09" Offset="0"/>
+            <GradientStop Color="#FF0E3320" Offset="0.52"/>
+            <GradientStop Color="#FF1A5C38" Offset="1"/>
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#AA18070B" Offset="0"/>
-            <GradientStop Color="#AA4E111A" Offset="1"/>
+            <GradientStop Color="#AA050F08" Offset="0"/>
+            <GradientStop Color="#AA0D3A20" Offset="1"/>
         </LinearGradientBrush>
 
         <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#1AFFFFFF"/>
-        <SolidColorBrush x:Key="PanelBorderBrush" Color="#669B4351"/>
-        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FFF35D70"/>
-        <SolidColorBrush x:Key="PrimaryButtonBorderBrush" Color="#FFFFA4AF"/>
-        <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FF33060C"/>
-        <SolidColorBrush x:Key="SecondaryButtonBrush" Color="#554D121C"/>
-        <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#88D17A86"/>
-        <SolidColorBrush x:Key="SecondaryButtonTextBrush" Color="#FFFFF1F3"/>
-        <SolidColorBrush x:Key="AnswerButtonBrush" Color="#443C0D16"/>
-        <SolidColorBrush x:Key="AnswerButtonBorderBrush" Color="#AAA95E6C"/>
-        <SolidColorBrush x:Key="AnswerButtonTextBrush" Color="#FFFFF4F5"/>
-        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FF46202A"/>
-        <SolidColorBrush x:Key="InputBorderBrush" Color="#FFC87886"/>
-        <SolidColorBrush x:Key="ComboItemBackgroundBrush" Color="#FF3A1821"/>
-        <SolidColorBrush x:Key="ComboItemHoverBrush" Color="#FF6D2532"/>
-        <SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#FF8A3140"/>
-        <SolidColorBrush x:Key="AccentTextBrush" Color="#FFFFB2BE"/>
-        <SolidColorBrush x:Key="SoftAccentTextBrush" Color="#FFF4CDD4"/>
-        <SolidColorBrush x:Key="StatusTextBrush" Color="#FFFFA0AF"/>
-        <SolidColorBrush x:Key="HintTextBrush" Color="#FFFFB8C3"/>
-        <SolidColorBrush x:Key="InfoCardBorderBrush" Color="#779F5664"/>
-        <SolidColorBrush x:Key="InfoCardBackgroundBrush" Color="#165B1824"/>
-        <SolidColorBrush x:Key="TipBorderBrush" Color="#66C06E7D"/>
-        <SolidColorBrush x:Key="TipBackgroundBrush" Color="#1D7D2433"/>
-        <SolidColorBrush x:Key="QuestionHighlightBorderBrush" Color="#99DB8A98"/>
-        <SolidColorBrush x:Key="QuestionHighlightBackgroundBrush" Color="#225E1722"/>
-        <SolidColorBrush x:Key="ProgressPendingBrush" Color="#FFC5AAB0"/>
-        <SolidColorBrush x:Key="ProgressPendingStrokeBrush" Color="#FF8D6970"/>
-        <SolidColorBrush x:Key="GroupBorderBrush" Color="#889A6670"/>
-        <SolidColorBrush x:Key="ListBackgroundBrush" Color="#22491723"/>
-        <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="#FF4A1620"/>
-        <SolidColorBrush x:Key="DataGridRowBrush" Color="#FF5B1C29"/>
-        <SolidColorBrush x:Key="DataGridAltRowBrush" Color="#FF6E2433"/>
-        <SolidColorBrush x:Key="DataGridHeaderBrush" Color="#FF7F2A3A"/>
-        <SolidColorBrush x:Key="DataGridGridBrush" Color="#669C6B76"/>
-        <SolidColorBrush x:Key="DataGridSelectionBrush" Color="#FFD24D64"/>
+        <SolidColorBrush x:Key="PanelBorderBrush" Color="#6645916A"/>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#FF3DAA72"/>
+        <SolidColorBrush x:Key="PrimaryButtonBorderBrush" Color="#FF90DDB0"/>
+        <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FF041E10"/>
+        <SolidColorBrush x:Key="SecondaryButtonBrush" Color="#55102A1A"/>
+        <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#8860BE8E"/>
+        <SolidColorBrush x:Key="SecondaryButtonTextBrush" Color="#FFF1FFF5"/>
+        <SolidColorBrush x:Key="AnswerButtonBrush" Color="#440D2A1A"/>
+        <SolidColorBrush x:Key="AnswerButtonBorderBrush" Color="#AA4A9E6E"/>
+        <SolidColorBrush x:Key="AnswerButtonTextBrush" Color="#FFF4FFF8"/>
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FF1A3D2A"/>
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#FF5CB882"/>
+        <SolidColorBrush x:Key="ComboItemBackgroundBrush" Color="#FF152B1E"/>
+        <SolidColorBrush x:Key="ComboItemHoverBrush" Color="#FF1E6040"/>
+        <SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#FF2A7A50"/>
+        <SolidColorBrush x:Key="AccentTextBrush" Color="#FF7DEBB0"/>
+        <SolidColorBrush x:Key="SoftAccentTextBrush" Color="#FFB8EDD0"/>
+        <SolidColorBrush x:Key="StatusTextBrush" Color="#FF88E0AA"/>
+        <SolidColorBrush x:Key="HintTextBrush" Color="#FFA0ECC0"/>
+        <SolidColorBrush x:Key="InfoCardBorderBrush" Color="#7742896A"/>
+        <SolidColorBrush x:Key="InfoCardBackgroundBrush" Color="#14165E30"/>
+        <SolidColorBrush x:Key="TipBorderBrush" Color="#6658B882"/>
+        <SolidColorBrush x:Key="TipBackgroundBrush" Color="#1A1A5E35"/>
+        <SolidColorBrush x:Key="QuestionHighlightBorderBrush" Color="#9960C890"/>
+        <SolidColorBrush x:Key="QuestionHighlightBackgroundBrush" Color="#1A0E4022"/>
+        <SolidColorBrush x:Key="ProgressPendingBrush" Color="#FFAAC5B4"/>
+        <SolidColorBrush x:Key="ProgressPendingStrokeBrush" Color="#FF608D74"/>
+        <SolidColorBrush x:Key="GroupBorderBrush" Color="#88429A6A"/>
+        <SolidColorBrush x:Key="ListBackgroundBrush" Color="#1A0E4020"/>
+        <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="#FF0E3A20"/>
+        <SolidColorBrush x:Key="DataGridRowBrush" Color="#FF144A28"/>
+        <SolidColorBrush x:Key="DataGridAltRowBrush" Color="#FF1A5C32"/>
+        <SolidColorBrush x:Key="DataGridHeaderBrush" Color="#FF236E3E"/>
+        <SolidColorBrush x:Key="DataGridGridBrush" Color="#6640886A"/>
+        <SolidColorBrush x:Key="DataGridSelectionBrush" Color="#FF3DAA72"/>
 
-        <DropShadowEffect x:Key="CardShadow" BlurRadius="18" ShadowDepth="0" Color="#CC180207"/>
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="18" ShadowDepth="0" Color="#CC010F05"/>
 
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}"/>
@@ -107,15 +107,48 @@
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="AnswerBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="AnswerBorder" Property="BorderBrush" Value="#FF90DDB0"/>
+                                    <Setter TargetName="AnswerBorder" Property="Background" Value="#5D1A5C38"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="AnswerBorder" Property="Background" Value="#88204A30"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.025" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.025" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.1"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
@@ -271,7 +304,8 @@
                     </Grid>
                 </Border>
 
-                <Grid x:Name="MainContentGrid" Grid.Row="3">
+                <Grid 
+                    x:Name="MainContentGrid" Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2.2*"/>
                         <ColumnDefinition Width="1.3*"/>
@@ -287,9 +321,23 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock x:Name="StatusTextBlock" Text="Prêt" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource StatusTextBrush}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="StatusTextBlock" Text="Prêt" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource StatusTextBrush}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
+                                    <TextBlock x:Name="TimerText" Text="--" FontWeight="Bold" FontSize="18" Foreground="#FF3DAA72" VerticalAlignment="Center" Margin="0,0,6,0" MinWidth="28" TextAlignment="Right"/>
+                                    <ProgressBar x:Name="TimerBar" Width="90" Height="8" Maximum="30" Value="30" Background="#3340C880" BorderThickness="0" VerticalAlignment="Center">
+                                        <ProgressBar.Foreground>
+                                            <SolidColorBrush x:Name="TimerBarForeground" Color="#FF3DAA72"/>
+                                        </ProgressBar.Foreground>
+                                    </ProgressBar>
+                                </StackPanel>
+                            </Grid>
 
-                            <Border Grid.Row="1" Margin="0,12,0,14" Padding="18" BorderBrush="{StaticResource QuestionHighlightBorderBrush}" BorderThickness="2" CornerRadius="18" Background="{StaticResource QuestionHighlightBackgroundBrush}">
+                            <Border x:Name="QuestionHighlightBorder" Grid.Row="1" Margin="0,12,0,14" Padding="18" BorderBrush="{StaticResource QuestionHighlightBorderBrush}" BorderThickness="2" CornerRadius="18" Background="{StaticResource QuestionHighlightBackgroundBrush}">
                                 <TextBlock x:Name="QuestionTextBlock" FontSize="31" FontWeight="Bold" TextWrapping="Wrap" Text="Cliquez sur 'Lancer' pour démarrer." TextAlignment="Center" LineHeight="42"/>
                             </Border>
 
@@ -317,7 +365,16 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentTextBrush}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                <Border x:Name="StreakBadge" Grid.Column="1" CornerRadius="16" Padding="10,3" Background="#CC1A5C38" Visibility="Collapsed" VerticalAlignment="Center">
+                                    <TextBlock x:Name="StreakText" Text="🔥 x0" FontWeight="Bold" FontSize="13" Foreground="#FF7DEBB0"/>
+                                </Border>
+                            </Grid>
                             <StackPanel Grid.Row="1" Margin="0,8,0,0">
                                 <TextBlock x:Name="PlayerInfoTextBlock"/>
                                 <TextBlock x:Name="ScoreInfoTextBlock" Margin="0,4,0,0"/>
@@ -403,7 +460,7 @@
             </Grid>
         </ScrollViewer>
 
-        <StatusBar Grid.Row="1" Margin="0,10,0,0" Background="#223680CC" BorderBrush="{StaticResource PanelBorderBrush}" BorderThickness="1">
+        <StatusBar Grid.Row="1" Margin="0,10,0,0" Background="#2224A855" BorderBrush="{StaticResource PanelBorderBrush}" BorderThickness="1">
             <StatusBarItem>
                 <TextBlock x:Name="FooterTextBlock" Text="ORM EF Core actif - prêt."/>
             </StatusBarItem>

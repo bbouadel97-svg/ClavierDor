@@ -4,6 +4,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace ClavierOr;
 
@@ -22,6 +24,10 @@ public partial class MainWindow : Window
     private bool _doublePointsActive;
     private bool _backEndRattrapageUsed;
 
+    private DispatcherTimer? _questionTimer;
+    private int _timerSeconds;
+    private const int TimerDuration = 30;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -31,6 +37,25 @@ public partial class MainWindow : Window
         RefreshScoresGrid();
         UpdateUiState();
         ApplyResponsiveLayout();
+        KeyDown += MainWindow_KeyDown;
+    }
+
+    private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (AnswersPanel.Children.Count == 0) return;
+        int index = e.Key switch
+        {
+            System.Windows.Input.Key.A or System.Windows.Input.Key.D1 or System.Windows.Input.Key.NumPad1 => 0,
+            System.Windows.Input.Key.B or System.Windows.Input.Key.D2 or System.Windows.Input.Key.NumPad2 => 1,
+            System.Windows.Input.Key.C or System.Windows.Input.Key.D3 or System.Windows.Input.Key.NumPad3 => 2,
+            System.Windows.Input.Key.D or System.Windows.Input.Key.D4 or System.Windows.Input.Key.NumPad4 => 3,
+            _ => -1
+        };
+        if (index >= 0 && index < AnswersPanel.Children.Count)
+        {
+            var btn = (Button)AnswersPanel.Children[index];
+            btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        }
     }
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -199,6 +224,7 @@ public partial class MainWindow : Window
             return;
         }
 
+        StopTimer();
         _gameService.FinishPartie(_currentPlayer, _currentPartie, _currentScore);
         AjouterHistoriqueLocal("Partie terminée.");
         RefreshScoresGrid();
@@ -229,6 +255,102 @@ public partial class MainWindow : Window
         AfficherQuestion(_currentQuestion);
     }
 
+    private void StartQuestionTimer()
+    {
+        _questionTimer?.Stop();
+        _timerSeconds = TimerDuration;
+        TimerBar.Value = TimerDuration;
+        TimerText.Text = _timerSeconds.ToString();
+        TimerBarForeground.Color = Color.FromRgb(0x3D, 0xAA, 0x72);
+
+        _questionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _questionTimer.Tick += (s, e) =>
+        {
+            _timerSeconds--;
+            TimerBar.Value = _timerSeconds;
+            TimerText.Text = _timerSeconds.ToString();
+
+            // Couleur vire au rouge vif quand il reste peu de temps
+            if (_timerSeconds <= 10)
+                TimerBarForeground.Color = Color.FromRgb(0xFF, 0x8C, 0x00); // orange d'alerte
+
+            if (_timerSeconds <= 0)
+            {
+                _questionTimer.Stop();
+                // Temps écoulé : compte comme mauvaise réponse et passe
+                if (_currentScore is not null)
+                {
+                    _currentScore.MauvaisesReponses++;
+                    _currentPartie?.ReinitialiserStreak();
+                    _currentScore.CalculerPourcentage();
+                }
+                HintTextBlock.Text = "Temps écoulé !";
+                UpdateUiState();
+                if (_currentPartie is not null && _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme))
+                    ChargerQuestionActuelle();
+                else
+                {
+                    QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
+                    AnswersPanel.Children.Clear();
+                    StatusTextBlock.Text = "Fin des questions";
+                }
+            }
+        };
+        _questionTimer.Start();
+    }
+
+    private void StopTimer()
+    {
+        _questionTimer?.Stop();
+        TimerText.Text = "--";
+        TimerBar.Value = 0;
+    }
+
+    private void FlashQuestionBorder(bool correct)
+    {
+        var targetColor = correct
+            ? Color.FromArgb(0x55, 0x22, 0xBB, 0x66)
+            : Color.FromArgb(0x55, 0xCC, 0x88, 0x00); // orange pour erreur, plus doux qu'un rouge vif
+        var original = Color.FromArgb(0x1A, 0x0E, 0x40, 0x22);
+
+        var anim = new ColorAnimation(targetColor, original, new Duration(TimeSpan.FromMilliseconds(600)))
+        {
+            EasingFunction = new QuadraticEase()
+        };
+        var brush = new SolidColorBrush(original);
+        QuestionHighlightBorder.Background = brush;
+        brush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
+    }
+
+    private void AnimateQuestionFadeIn()
+    {
+        QuestionHighlightBorder.Opacity = 0;
+        var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromMilliseconds(220)));
+        QuestionHighlightBorder.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+    }
+
+    private void UpdateStreakBadge()
+    {
+        var streak = _currentPartie?.StreakActuelle ?? 0;
+        if (streak >= 2)
+        {
+            StreakBadge.Visibility = Visibility.Visible;
+            StreakText.Text = $"\U0001F525 x{streak}";
+            var pulse = new DoubleAnimation(1.15, 1.0, new Duration(TimeSpan.FromMilliseconds(300)))
+            {
+                EasingFunction = new ElasticEase { Oscillations = 1, Springiness = 5 }
+            };
+            StreakBadge.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
+            StreakBadge.RenderTransform = new ScaleTransform();
+            ((ScaleTransform)StreakBadge.RenderTransform).BeginAnimation(ScaleTransform.ScaleXProperty, pulse);
+            ((ScaleTransform)StreakBadge.RenderTransform).BeginAnimation(ScaleTransform.ScaleYProperty, pulse);
+        }
+        else
+        {
+            StreakBadge.Visibility = Visibility.Collapsed;
+        }
+    }
+
     private void AfficherQuestion(Question question)
     {
         QuestionTextBlock.Text = question.Enonce;
@@ -247,6 +369,9 @@ public partial class MainWindow : Window
             .GetReponsesForQuestion(question.Id)
             .OrderBy(_ => Random.Shared.Next())
             .ToList();
+
+        AnimateQuestionFadeIn();
+        StartQuestionTimer();
 
         for (var index = 0; index < reponsesMelangees.Count; index++)
         {
@@ -293,6 +418,8 @@ public partial class MainWindow : Window
                 HintTextBlock.Text = "Rattrapage Back-End utilisé: réponse sauvée automatiquement.";
             }
 
+            _questionTimer?.Stop();
+
             if (isCorrect)
             {
                 var points = _currentQuestion.PointsAttribues;
@@ -313,13 +440,16 @@ public partial class MainWindow : Window
                 _currentPartie.EnregistrerBonneReponse();
                 _currentPlayer.AjouterExperience(15);
                 HintTextBlock.Text = "Bonne réponse !";
+                FlashQuestionBorder(true);
             }
             else
             {
                 _currentScore.MauvaisesReponses++;
                 _currentPartie.ReinitialiserStreak();
                 HintTextBlock.Text = selected.Explication ?? "Mauvaise réponse.";
+                FlashQuestionBorder(false);
             }
+            UpdateStreakBadge();
 
             var hasNext = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
 
