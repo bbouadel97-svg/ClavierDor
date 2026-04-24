@@ -206,7 +206,10 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentTextBrush}"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <TextBlock Text="Quiz Arena" FontSize="34" FontWeight="Bold" Margin="0,2,0,0"/>
                 </StackPanel>
 
@@ -233,7 +236,10 @@
 
                             <Border Grid.Column="0" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Comment jouer" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE82D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Comment jouer" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="1) Choisissez votre rôle et un thème."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="2) Répondez vite et juste pour monter le streak."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="3) Sauvegardez vos scores et suivez votre progression."/>
@@ -242,7 +248,10 @@
 
                             <Border Grid.Column="1" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Rôles spéciaux" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Rôles spéciaux" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Mobile: accès aux indices."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Front-End: peut passer une question."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Back-End: un rattrapage automatique en cas d'erreur."/>
@@ -251,7 +260,10 @@
 
                             <Border Grid.Column="2" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <TextBlock Text="Objectif Clavier d'Or" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8D4;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Objectif Clavier d'Or" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                     <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Atteignez 70% de réussite pour débloquer les boss."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Accumulez de l'XP pour monter de niveau."/>
                                     <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Vainquez des boss pour obtenir le titre final."/>
@@ -260,8 +272,11 @@
                         </Grid>
 
                         <Border Grid.Row="2" Margin="0,12,0,0" Padding="10" BorderBrush="{StaticResource TipBorderBrush}" BorderThickness="1" CornerRadius="12" Background="{StaticResource TipBackgroundBrush}">
-                            <TextBlock TextWrapping="Wrap" Foreground="#FFFFF1F3" FontWeight="SemiBold"
-                                       Text="Astuce: commencez par un thème que vous maîtrisez, puis activez 'Double points' au bon moment pour maximiser votre score."/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xEA82;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Top" Margin="0,1,8,0"/>
+                                <TextBlock TextWrapping="Wrap" Foreground="#FFFFF1F3" FontWeight="SemiBold" VerticalAlignment="Center"
+                                           Text="Astuce: commencez par un thème que vous maîtrisez, puis activez 'Double points' au bon moment pour maximiser votre score."/>
+                            </StackPanel>
                         </Border>
                     </Grid>
                 </Border>
@@ -297,9 +312,24 @@
                         </Grid>
 
                         <WrapPanel Grid.Row="1" Margin="0,14,0,0" HorizontalAlignment="Right" ItemHeight="34">
-                            <Button x:Name="NewGameButton" Content="Lancer partie" MinWidth="165" Height="34" Margin="0,0,12,8" Style="{StaticResource PrimaryButtonStyle}" Click="NewGameButton_Click"/>
-                            <Button x:Name="ResumeGameButton" Content="Reprendre partie" MinWidth="180" Height="34" Margin="0,0,12,8" Style="{StaticResource SecondaryButtonStyle}" Click="ResumeGameButton_Click"/>
-                            <Button x:Name="SaveButton" Content="Sauvegarder partie" MinWidth="190" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="SaveButton_Click"/>
+                            <Button x:Name="NewGameButton" MinWidth="165" Height="34" Margin="0,0,12,8" Style="{StaticResource PrimaryButtonStyle}" Click="NewGameButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Lancer partie" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="ResumeGameButton" MinWidth="180" Height="34" Margin="0,0,12,8" Style="{StaticResource SecondaryButtonStyle}" Click="ResumeGameButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Reprendre partie" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="SaveButton" MinWidth="190" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="SaveButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Sauvegarder partie" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                         </WrapPanel>
                     </Grid>
                 </Border>
@@ -346,9 +376,24 @@
                             </ScrollViewer>
 
                             <WrapPanel Grid.Row="3" Margin="0,12,0,0">
-                                <Button x:Name="HintButton" Content="Indice" MinWidth="110" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="HintButton_Click"/>
-                                <Button x:Name="SkipButton" Content="Question suivante" MinWidth="160" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="SkipButton_Click"/>
-                                <Button x:Name="DoubleButton" Content="Double points" MinWidth="130" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="DoubleButton_Click"/>
+                                <Button x:Name="HintButton" MinWidth="110" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="HintButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xEA82;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Indice" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="SkipButton" MinWidth="160" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="SkipButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE893;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Question suivante" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="DoubleButton" MinWidth="130" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="DoubleButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Double points" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </WrapPanel>
 
                             <TextBlock x:Name="HintTextBlock" Grid.Row="4" Margin="0,8,0,0" Foreground="{StaticResource HintTextBrush}" TextWrapping="Wrap" FontWeight="SemiBold"/>
@@ -370,7 +415,10 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Tableau de bord" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                </StackPanel>
                                 <Border x:Name="StreakBadge" Grid.Column="1" CornerRadius="16" Padding="10,3" Background="#CC1A5C38" Visibility="Collapsed" VerticalAlignment="Center">
                                     <TextBlock x:Name="StreakText" Text="🔥 x0" FontWeight="Bold" FontSize="13" Foreground="#FF7DEBB0"/>
                                 </Border>
@@ -401,8 +449,18 @@
                             </GroupBox>
 
                             <WrapPanel Grid.Row="3" Margin="0,4,0,4">
-                                <Button x:Name="FinishButton" Content="Terminer" MinWidth="120" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="FinishButton_Click"/>
-                                <Button x:Name="ExportPdfButton" Content="Export PDF" MinWidth="110" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click"/>
+                                <Button x:Name="FinishButton" MinWidth="120" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="FinishButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Terminer" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="ExportPdfButton" MinWidth="110" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8DE;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Export PDF" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </WrapPanel>
 
                             <GroupBox Grid.Row="4" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFFFF1F3" BorderBrush="{StaticResource GroupBorderBrush}">

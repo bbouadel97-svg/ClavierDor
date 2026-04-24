@@ -471,6 +471,17 @@ public class GameService
         return db.Reponses.AsNoTracking().Where(r => r.QuestionId == questionId).OrderBy(r => r.Id).ToList();
     }
 
+    /// <summary>
+    /// Retourne une question aléatoire du thème pour servir de question Boss.
+    /// </summary>
+    public Question? GetBossQuestion(CategorieQuestion? categorie = null)
+    {
+        using var db = new ClavierOrContext();
+        var list = FiltrerParCategorie(db.Questions.AsNoTracking(), categorie).ToList();
+        if (list.Count == 0) return null;
+        return list[Random.Shared.Next(list.Count)];
+    }
+
     public bool MoveNextQuestion(int partieId, CategorieQuestion? categorie = null)
     {
         using var db = new ClavierOrContext();

@@ -23,6 +23,8 @@ public partial class MainWindow : Window
     private CategorieQuestion? _currentTheme;
     private bool _doublePointsActive;
     private bool _backEndRattrapageUsed;
+    private bool _bossTriggered;
+    private bool _bossQuestionActive;
 
     private DispatcherTimer? _questionTimer;
     private int _timerSeconds;
@@ -152,6 +154,8 @@ public partial class MainWindow : Window
         _currentScore = _gameService.CreateScore(_currentPlayer.Id, _currentPartie.Id);
         _doublePointsActive = false;
         _backEndRattrapageUsed = false;
+        _bossTriggered = false;
+        _bossQuestionActive = false;
 
         AjouterHistoriqueLocal($"Nouvelle partie pour {_currentPlayer.Pseudo} - thème {_currentTheme}.");
         ChargerQuestionActuelle();
@@ -286,6 +290,12 @@ public partial class MainWindow : Window
                 }
                 HintTextBlock.Text = "Temps écoulé !";
                 UpdateUiState();
+                if (_bossQuestionActive)
+                {
+                    _bossQuestionActive = false;
+                    RetirerStyleBoss();
+                    HintTextBlock.Text = "Temps écoulé ! Le boss résiste... continuez à progresser.";
+                }
                 if (_currentPartie is not null && _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme))
                     ChargerQuestionActuelle();
                 else
@@ -297,6 +307,48 @@ public partial class MainWindow : Window
             }
         };
         _questionTimer.Start();
+    }
+
+    private void LancerQuestionBoss()
+    {
+        var bossQuestion = _gameService.GetBossQuestion(_currentTheme);
+        if (bossQuestion is null)
+        {
+            // Pas de question disponible, on avance normalement
+            var hasNext = _gameService.MoveNextQuestion(_currentPartie!.Id, _currentTheme);
+            if (hasNext)
+                ChargerQuestionActuelle();
+            else
+            {
+                QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
+                AnswersPanel.Children.Clear();
+                StatusTextBlock.Text = "Fin des questions";
+            }
+            return;
+        }
+
+        _bossQuestionActive = true;
+        _currentQuestion = bossQuestion;
+        AppliquerStyleBoss();
+        AfficherQuestion(bossQuestion);
+        // Surcharger le statut après AfficherQuestion pour afficher le message boss
+        StatusTextBlock.Text = "⚔ QUESTION BOSS — Réponds correctement pour vaincre le boss !";
+        AjouterHistoriqueLocal("⚔ Question Boss déclenchée !");
+        FooterTextBlock.Text = "⚔ BOSS — Réponds correctement pour vaincre le boss et gagner +100 pts bonus !";
+    }
+
+    private void AppliquerStyleBoss()
+    {
+        QuestionHighlightBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(0xDD, 0xFF, 0xD7, 0x00));
+        QuestionHighlightBorder.Background = new SolidColorBrush(Color.FromArgb(0x30, 0x80, 0x50, 0x00));
+        QuestionHighlightBorder.BorderThickness = new Thickness(3);
+    }
+
+    private void RetirerStyleBoss()
+    {
+        QuestionHighlightBorder.BorderBrush = (Brush)FindResource("QuestionHighlightBorderBrush");
+        QuestionHighlightBorder.Background = (Brush)FindResource("QuestionHighlightBackgroundBrush");
+        QuestionHighlightBorder.BorderThickness = new Thickness(2);
     }
 
     private void StopTimer()
@@ -451,10 +503,59 @@ public partial class MainWindow : Window
             }
             UpdateStreakBadge();
 
-            var hasNext = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
-
             _currentScore.StreakMaximum = Math.Max(_currentScore.StreakMaximum, _currentPartie.MeilleurStreak);
             _currentScore.CalculerPourcentage();
+
+            // Résolution d'une question boss
+            if (_bossQuestionActive)
+            {
+                _bossQuestionActive = false;
+                RetirerStyleBoss();
+                if (isCorrect)
+                {
+                    _currentPlayer.VaincreBoss();
+                    _currentScore.Points += 100; // bonus boss
+                    HintTextBlock.Text = "🏆 Boss vaincu ! +100 pts bonus. Continuez votre progression !";
+                    _gameService.LogAction(_currentPlayer.Id, TypeAction.BossVaincu, "Boss vaincu en cours de partie !", _currentPartie.Id);
+                }
+                else
+                {
+                    HintTextBlock.Text = "Le boss résiste... continuez à progresser pour l'affronter à nouveau.";
+                }
+                _gameService.PersistProgress(_currentPlayer, _currentPartie, _currentScore, logAction: false);
+                _gameService.LogAction(_currentPlayer.Id, TypeAction.ScoreEnregistre, "Question boss répondue.", _currentPartie.Id);
+                var hasNextAfterBoss = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
+                if (!hasNextAfterBoss)
+                {
+                    QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
+                    foreach (Button oldButton in AnswersPanel.Children.OfType<Button>())
+                        oldButton.Click -= AnswerButton_Click;
+                    AnswersPanel.Children.Clear();
+                    StatusTextBlock.Text = "Fin des questions";
+                }
+                else
+                {
+                    ChargerQuestionActuelle();
+                }
+                RefreshScoresGrid();
+                UpdateUiState();
+                return;
+            }
+
+            // Déclenchement de la question boss (première fois ≥ 70% de réussite)
+            if (isCorrect && !_bossTriggered && _currentScore.PourcentageReussite >= 70)
+            {
+                _bossTriggered = true;
+                _gameService.PersistProgress(_currentPlayer, _currentPartie, _currentScore, logAction: false);
+                _gameService.LogAction(_currentPlayer.Id, TypeAction.ScoreEnregistre, $"Réponse à la question {_currentQuestion.Id}.", _currentPartie.Id);
+                LancerQuestionBoss();
+                RefreshScoresGrid();
+                UpdateUiState();
+                return;
+            }
+
+            var hasNext = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
+
             _gameService.PersistProgress(_currentPlayer, _currentPartie, _currentScore, logAction: false);
 
             _gameService.LogAction(_currentPlayer.Id, TypeAction.ScoreEnregistre, $"Réponse à la question {_currentQuestion.Id}.", _currentPartie.Id);
