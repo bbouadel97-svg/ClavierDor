@@ -9,6 +9,7 @@ namespace ClavierOr;
 
 public class GameService
 {
+    private const string ThemeHistoryPrefix = "THEME::";
     private List<Role>? _rolesCache;
 
     public void InitialiserDonnees()
@@ -398,6 +399,48 @@ public class GameService
         return partie;
     }
 
+    public bool IsThemeAlreadyPlayedByPlayer(int joueurId, CategorieQuestion theme, int? partieIdToAllow = null)
+    {
+        using var db = new ClavierOrContext();
+        var themeToken = BuildThemeHistoryToken(theme);
+
+        var query = db.Historiques
+            .AsNoTracking()
+            .Where(h => h.JoueurId == joueurId && h.Action == TypeAction.ThemeJoue && h.Description == themeToken);
+
+        if (partieIdToAllow.HasValue)
+        {
+            query = query.Where(h => h.PartieId != partieIdToAllow.Value);
+        }
+
+        return query.Any();
+    }
+
+    public void RegisterThemeForPartie(int joueurId, int partieId, CategorieQuestion theme)
+    {
+        using var db = new ClavierOrContext();
+        var themeToken = BuildThemeHistoryToken(theme);
+
+        var exists = db.Historiques
+            .AsNoTracking()
+            .Any(h => h.JoueurId == joueurId
+                   && h.PartieId == partieId
+                   && h.Action == TypeAction.ThemeJoue
+                   && h.Description == themeToken);
+
+        if (exists)
+        {
+            return;
+        }
+
+        db.Historiques.Add(new Historique(joueurId, TypeAction.ThemeJoue, themeToken)
+        {
+            PartieId = partieId,
+            DateAction = DateTime.Now
+        });
+        db.SaveChanges();
+    }
+
     public Score CreateScore(int joueurId, int partieId)
     {
         using var db = new ClavierOrContext();
@@ -500,6 +543,19 @@ public class GameService
         partie.QuestionActuelleIndex++;
         db.SaveChanges();
         return true;
+    }
+
+    public void SetQuestionIndex(int partieId, int index)
+    {
+        using var db = new ClavierOrContext();
+        var partie = db.Parties.FirstOrDefault(p => p.Id == partieId);
+        if (partie is null)
+        {
+            return;
+        }
+
+        partie.QuestionActuelleIndex = Math.Max(0, index);
+        db.SaveChanges();
     }
 
     private static IQueryable<Question> FiltrerParCategorie(IQueryable<Question> query, CategorieQuestion? categorie)
@@ -606,6 +662,11 @@ public class GameService
             DateAction = DateTime.Now
         });
         db.SaveChanges();
+    }
+
+    private static string BuildThemeHistoryToken(CategorieQuestion theme)
+    {
+        return $"{ThemeHistoryPrefix}{theme}";
     }
 
     public List<Score> GetScoresWithPlayers()

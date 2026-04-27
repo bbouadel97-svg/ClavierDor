@@ -29,6 +29,7 @@ public partial class MainWindow : Window
     private DispatcherTimer? _questionTimer;
     private int _timerSeconds;
     private const int TimerDuration = 30;
+    private bool _isQuizPageVisible;
 
     public MainWindow()
     {
@@ -36,10 +37,104 @@ public partial class MainWindow : Window
         _gameService.InitialiserDonnees();
         ChargerRoles();
         ChargerThemes();
+        ShowHomePage();
         RefreshScoresGrid();
         UpdateUiState();
         ApplyResponsiveLayout();
         KeyDown += MainWindow_KeyDown;
+    }
+
+    private void ShowHomePage()
+    {
+        AnimatePageTransition(QuizPageGrid, HomePageGrid);
+        _isQuizPageVisible = false;
+    }
+
+    private void ShowQuizPage()
+    {
+        var hasActiveGame = _currentPartie is not null
+            && _currentScore is not null
+            && (_currentPartie.Etat == EtatPartie.EnCours || _currentPartie.Etat == EtatPartie.EnPause);
+
+        if (!hasActiveGame)
+        {
+            FooterTextBlock.Text = "Lancez ou reprenez une partie depuis l'accueil pour acceder au quiz.";
+            return;
+        }
+
+        AnimatePageTransition(HomePageGrid, QuizPageGrid);
+        _isQuizPageVisible = true;
+        ApplyResponsiveLayout();
+    }
+
+    private static void AnimatePageTransition(UIElement fromPage, UIElement toPage)
+    {
+        var fadeOut = new DoubleAnimation(1, 0, new Duration(TimeSpan.FromMilliseconds(160)));
+        fadeOut.Completed += (_, _) =>
+        {
+            fromPage.Visibility = Visibility.Collapsed;
+            toPage.Opacity = 0;
+            toPage.Visibility = Visibility.Visible;
+            var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromMilliseconds(220)))
+            {
+                EasingFunction = new QuadraticEase()
+            };
+            toPage.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+        };
+
+        fromPage.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+    }
+
+    private void BackToHomeButton_Click(object sender, RoutedEventArgs e)
+    {
+        ShowHomePage();
+        FooterTextBlock.Text = "Retour à l'accueil.";
+    }
+
+    private void NextThemeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentPartie is null || _currentScore is null)
+        {
+            FooterTextBlock.Text = "Aucune partie active pour changer de thème.";
+            return;
+        }
+
+        StopTimer();
+        ShowHomePage();
+        FooterTextBlock.Text = "Choisissez un thème puis cliquez 'Reprendre partie'.";
+    }
+
+    private bool ProposerNouveauTheme()
+    {
+        var result = MessageBox.Show(
+            "Ce thème est terminé. Voulez-vous continuer la même partie sur un nouveau thème ?",
+            "Thème terminé",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            QuestionTextBlock.Text = "Thème terminé. Cliquez sur 'Terminer partie' ou changez de thème depuis l'accueil.";
+            AnswersPanel.Children.Clear();
+            StatusTextBlock.Text = "Fin du thème";
+            return false;
+        }
+
+        StopTimer();
+        ShowHomePage();
+        FooterTextBlock.Text = "Choisissez un nouveau thème puis cliquez 'Reprendre partie'.";
+        return true;
+    }
+
+    private void GererFinDeTheme()
+    {
+        if (!ProposerNouveauTheme())
+        {
+            UpdateUiState();
+            return;
+        }
+
+        UpdateUiState();
     }
 
     private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -67,6 +162,11 @@ public partial class MainWindow : Window
 
     private void ApplyResponsiveLayout()
     {
+        if (!_isQuizPageVisible)
+        {
+            return;
+        }
+
         var useStackedLayout = ActualWidth < StackedLayoutWidthThreshold;
         var answersColumns = ActualWidth >= 1600 ? 4 : ActualWidth >= 1150 ? 3 : ActualWidth >= 850 ? 2 : 1;
 
@@ -150,8 +250,17 @@ public partial class MainWindow : Window
         _currentTheme = theme;
 
         _currentPlayer = _gameService.GetOrCreatePlayer(pseudo, role.Id);
+
+        if (_gameService.IsThemeAlreadyPlayedByPlayer(_currentPlayer.Id, theme))
+        {
+            MessageBox.Show("Ce thème a déjà été joué par ce joueur. Choisissez un autre thème.");
+            FooterTextBlock.Text = "Thème déjà joué pour ce joueur.";
+            return;
+        }
+
         _currentPartie = _gameService.StartNewPartie(_currentPlayer.Id);
         _currentScore = _gameService.CreateScore(_currentPlayer.Id, _currentPartie.Id);
+        _gameService.RegisterThemeForPartie(_currentPlayer.Id, _currentPartie.Id, theme);
         _doublePointsActive = false;
         _backEndRattrapageUsed = false;
         _bossTriggered = false;
@@ -159,6 +268,7 @@ public partial class MainWindow : Window
 
         AjouterHistoriqueLocal($"Nouvelle partie pour {_currentPlayer.Pseudo} - thème {_currentTheme}.");
         ChargerQuestionActuelle();
+        ShowQuizPage();
         UpdateUiState();
         FooterTextBlock.Text = "Partie démarrée.";
     }
@@ -189,12 +299,35 @@ public partial class MainWindow : Window
 
         _currentPlayer = player;
         _currentPartie = _gameService.ResumeOrCreatePartie(player.Id);
+
+        if (_gameService.IsThemeAlreadyPlayedByPlayer(_currentPlayer.Id, theme, _currentPartie.Id))
+        {
+            MessageBox.Show("Ce thème a déjà été joué par ce joueur. Choisissez un autre thème.");
+            FooterTextBlock.Text = "Thème déjà joué pour ce joueur.";
+            ShowHomePage();
+            UpdateUiState();
+            return;
+        }
+
+        _gameService.RegisterThemeForPartie(_currentPlayer.Id, _currentPartie.Id, theme);
         _currentScore = _gameService.ResumeOrCreateScore(player.Id, _currentPartie.Id);
         _currentQuestion = _gameService.GetCurrentQuestion(_currentPartie.Id, _currentTheme);
 
         if (_currentQuestion is null)
         {
-            ChargerQuestionActuelle();
+            _gameService.SetQuestionIndex(_currentPartie.Id, 0);
+            _currentPartie.QuestionActuelleIndex = 0;
+            _currentQuestion = _gameService.GetCurrentQuestion(_currentPartie.Id, _currentTheme);
+            if (_currentQuestion is null)
+            {
+                MessageBox.Show("Aucune question disponible pour ce thème.");
+                ShowHomePage();
+                FooterTextBlock.Text = "Choisissez un autre thème puis cliquez 'Reprendre partie'.";
+                UpdateUiState();
+                return;
+            }
+
+            AfficherQuestion(_currentQuestion);
         }
         else
         {
@@ -202,6 +335,7 @@ public partial class MainWindow : Window
         }
 
         AjouterHistoriqueLocal($"Partie reprise - thème {_currentTheme}.");
+        ShowQuizPage();
         UpdateUiState();
         FooterTextBlock.Text = "Partie reprise.";
     }
@@ -233,6 +367,7 @@ public partial class MainWindow : Window
         AjouterHistoriqueLocal("Partie terminée.");
         RefreshScoresGrid();
         MessageBox.Show($"Partie terminée. Score final: {_currentScore.Points}");
+        _currentPartie.Etat = EtatPartie.Terminee;
         FooterTextBlock.Text = "Partie terminée.";
     }
 
@@ -252,7 +387,7 @@ public partial class MainWindow : Window
         _currentQuestion = _gameService.GetCurrentQuestion(_currentPartie.Id, _currentTheme);
         if (_currentQuestion is null)
         {
-            MessageBox.Show("Plus de questions pour ce thème. Terminez la partie.");
+            GererFinDeTheme();
             return;
         }
 
@@ -300,9 +435,7 @@ public partial class MainWindow : Window
                     ChargerQuestionActuelle();
                 else
                 {
-                    QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
-                    AnswersPanel.Children.Clear();
-                    StatusTextBlock.Text = "Fin des questions";
+                    GererFinDeTheme();
                 }
             }
         };
@@ -320,9 +453,7 @@ public partial class MainWindow : Window
                 ChargerQuestionActuelle();
             else
             {
-                QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
-                AnswersPanel.Children.Clear();
-                StatusTextBlock.Text = "Fin des questions";
+                GererFinDeTheme();
             }
             return;
         }
@@ -527,11 +658,7 @@ public partial class MainWindow : Window
                 var hasNextAfterBoss = _gameService.MoveNextQuestion(_currentPartie.Id, _currentTheme);
                 if (!hasNextAfterBoss)
                 {
-                    QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
-                    foreach (Button oldButton in AnswersPanel.Children.OfType<Button>())
-                        oldButton.Click -= AnswerButton_Click;
-                    AnswersPanel.Children.Clear();
-                    StatusTextBlock.Text = "Fin des questions";
+                    GererFinDeTheme();
                 }
                 else
                 {
@@ -562,13 +689,7 @@ public partial class MainWindow : Window
 
             if (!hasNext)
             {
-                QuestionTextBlock.Text = "Quiz terminé. Cliquez sur 'Terminer partie'.";
-                foreach (Button oldButton in AnswersPanel.Children.OfType<Button>())
-                {
-                    oldButton.Click -= AnswerButton_Click;
-                }
-                AnswersPanel.Children.Clear();
-                StatusTextBlock.Text = "Fin des questions";
+                GererFinDeTheme();
             }
             else
             {
@@ -752,7 +873,6 @@ public partial class MainWindow : Window
     {
         var hasGame = _currentPlayer is not null && _currentPartie is not null && _currentScore is not null;
         var hasActiveGame = hasGame && (_currentPartie!.Etat == EtatPartie.EnCours || _currentPartie.Etat == EtatPartie.EnPause);
-        HomePanelBorder.Visibility = hasGame ? Visibility.Collapsed : Visibility.Visible;
 
         PlayerInfoTextBlock.Text = _currentPlayer is null
             ? "Joueur: -"
@@ -781,5 +901,8 @@ public partial class MainWindow : Window
         SaveButton.IsEnabled = hasActiveGame;
         FinishButton.IsEnabled = hasActiveGame;
         ExportPdfButton.IsEnabled = hasGame;
+        BackToHomeButton.IsEnabled = true;
+        NextThemeButton.IsEnabled = hasActiveGame;
+        NextThemeInlineButton.IsEnabled = hasActiveGame;
     }
 }

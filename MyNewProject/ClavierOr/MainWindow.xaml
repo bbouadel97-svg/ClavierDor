@@ -121,8 +121,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="AnswerBorder" Property="BorderBrush" Value="#FF90DDB0"/>
-                                    <Setter TargetName="AnswerBorder" Property="Background" Value="#5D1A5C38"/>
+                                <Setter TargetName="AnswerBorder" Property="BorderBrush" Value="#FF90DDB0"/>
+                                <Setter TargetName="AnswerBorder" Property="Background" Value="#5D1A5C38"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="AnswerBorder" Property="Background" Value="#88204A30"/>
@@ -196,24 +196,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <TextBlock Text="Quiz Arena" FontSize="34" FontWeight="Bold" Margin="0,2,0,0"/>
-                </StackPanel>
-
-                <Border x:Name="HomePanelBorder" Grid.Row="1" Padding="18" Margin="0,12,0,10" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource CardBackgroundBrush}" BorderThickness="1" CornerRadius="22" Effect="{StaticResource CardShadow}">
+        <Grid Grid.Row="0">
+            <Grid x:Name="HomePageGrid">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -222,120 +207,180 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel>
-                            <TextBlock Text="Bienvenue dans Clavier d'Or" FontSize="28" FontWeight="Bold"/>
-                            <TextBlock Margin="0,6,0,0" FontSize="15" TextWrapping="Wrap" Foreground="{StaticResource SoftAccentTextBrush}"
-                                       Text="Un quiz évolutif orienté informatique où chaque rôle change votre stratégie. Préparez votre pseudo, choisissez votre thème, puis enchaînez les questions pour progresser jusqu'au rang Clavier d'Or."/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="CLAVIER D'OR" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="Arena Qualificative" FontSize="34" FontWeight="Bold" Margin="0,2,0,0"/>
+                            <TextBlock Text="Tour de selection - Session du jour" Margin="0,4,0,0" FontSize="14" Foreground="{StaticResource SoftAccentTextBrush}"/>
+                            <Border Margin="0,10,0,0" Padding="10,6" CornerRadius="10" BorderBrush="{StaticResource TipBorderBrush}" BorderThickness="1" Background="#223DAA72" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE7EF;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" Margin="0,0,7,0"/>
+                                    <TextBlock Text="Top score live: depassez 70% pour debloquer les boss" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
 
-                        <Grid Grid.Row="1" Margin="0,14,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Border x:Name="HomePanelBorder" Grid.Row="1" Padding="18" Margin="0,12,0,10" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource CardBackgroundBrush}" BorderThickness="1" CornerRadius="22" Effect="{StaticResource CardShadow}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                            <Border Grid.Column="0" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
                                 <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE82D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Comment jouer" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="1) Choisissez votre rôle et un thème."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="2) Répondez vite et juste pour monter le streak."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="3) Sauvegardez vos scores et suivez votre progression."/>
+                                    <TextBlock Text="Bienvenue dans Clavier d'Or" FontSize="28" FontWeight="Bold"/>
+                                    <TextBlock Margin="0,6,0,0" FontSize="15" TextWrapping="Wrap" Foreground="{StaticResource SoftAccentTextBrush}"
+                                               Text="Definissez votre profil de candidat, choisissez votre theme et entrez dans l'arene. Chaque role modifie votre strategie et chaque reponse impacte votre qualification."/>
                                 </StackPanel>
-                            </Border>
 
-                            <Border Grid.Column="1" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
-                                <StackPanel>
+                                <Grid Grid.Row="1" Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE82D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <TextBlock Text="Format du concours" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="1) Enregistrez votre nom et votre role."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="2) Lancez la manche quiz et enchainez les bonnes reponses."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="3) Sauvegardez votre progression pour rester dans la course."/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Margin="0,0,10,0" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <TextBlock Text="Bonus de role" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Mobile: accès aux indices."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Front-End: peut passer une question."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Back-End: un rattrapage automatique en cas d'erreur."/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE8D4;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <TextBlock Text="Niveau vise" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Atteignez 70% de réussite pour débloquer les boss."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Accumulez de l'XP pour monter de niveau."/>
+                                            <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Vainquez des boss pour obtenir le titre final."/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <Border Grid.Row="2" Margin="0,12,0,0" Padding="10" BorderBrush="{StaticResource TipBorderBrush}" BorderThickness="1" CornerRadius="12" Background="{StaticResource TipBackgroundBrush}">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Rôles spéciaux" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xEA82;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Top" Margin="0,1,8,0"/>
+                                        <TextBlock TextWrapping="Wrap" Foreground="#FFFFF1F3" FontWeight="SemiBold" VerticalAlignment="Center"
+                                                   Text="Configurez vos options ici, puis lancez le quiz sur la page suivante."/>
                                     </StackPanel>
-                                    <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Mobile: accès aux indices."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Front-End: peut passer une question."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Back-End: un rattrapage automatique en cas d'erreur."/>
-                                </StackPanel>
-                            </Border>
+                                </Border>
+                            </Grid>
+                        </Border>
 
-                            <Border Grid.Column="2" Padding="12" CornerRadius="14" BorderBrush="{StaticResource InfoCardBorderBrush}" BorderThickness="1" Background="{StaticResource InfoCardBackgroundBrush}">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE8D4;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <TextBlock Text="Objectif Clavier d'Or" FontWeight="Bold" FontSize="15" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Center"/>
+                        <Border Grid.Row="2" Padding="14" Margin="0,0,0,12" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource CardBackgroundBrush}" BorderThickness="1" CornerRadius="18" Effect="{StaticResource CardShadow}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Joueur" FontWeight="SemiBold"/>
+                                        <TextBox x:Name="PlayerNameTextBox" Height="34" Margin="0,4,0,0" Style="{StaticResource InputTextBoxStyle}"/>
                                     </StackPanel>
-                                    <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Text="Atteignez 70% de réussite pour débloquer les boss."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Accumulez de l'XP pour monter de niveau."/>
-                                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Text="Vainquez des boss pour obtenir le titre final."/>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
 
-                        <Border Grid.Row="2" Margin="0,12,0,0" Padding="10" BorderBrush="{StaticResource TipBorderBrush}" BorderThickness="1" CornerRadius="12" Background="{StaticResource TipBackgroundBrush}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xEA82;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{StaticResource AccentTextBrush}" VerticalAlignment="Top" Margin="0,1,8,0"/>
-                                <TextBlock TextWrapping="Wrap" Foreground="#FFFFF1F3" FontWeight="SemiBold" VerticalAlignment="Center"
-                                           Text="Astuce: commencez par un thème que vous maîtrisez, puis activez 'Double points' au bon moment pour maximiser votre score."/>
-                            </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                                        <TextBlock Text="Rôle" FontWeight="SemiBold"/>
+                                        <ComboBox x:Name="RoleComboBox" Height="34" Margin="0,4,0,0" SelectionChanged="RoleComboBox_SelectionChanged" Style="{StaticResource InputComboBoxStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Thème" FontWeight="SemiBold"/>
+                                        <ComboBox x:Name="ThemeComboBox" Height="34" Margin="0,4,0,0" SelectionChanged="ThemeComboBox_SelectionChanged" Style="{StaticResource InputComboBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <WrapPanel Grid.Row="1" Margin="0,14,0,0" HorizontalAlignment="Right" ItemHeight="34">
+                                    <Button x:Name="NewGameButton" MinWidth="165" Height="34" Margin="0,0,12,8" Style="{StaticResource PrimaryButtonStyle}" Click="NewGameButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Lancer partie" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="ResumeGameButton" MinWidth="180" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ResumeGameButton_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Reprendre partie" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </WrapPanel>
+                            </Grid>
                         </Border>
                     </Grid>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid x:Name="QuizPageGrid" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Padding="10" Margin="0,0,0,12" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource CardBackgroundBrush}" BorderThickness="1" CornerRadius="12" Effect="{StaticResource CardShadow}">
+                    <WrapPanel HorizontalAlignment="Right" ItemHeight="34">
+                        <Button x:Name="BackToHomeButton" MinWidth="130" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="BackToHomeButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Accueil" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="NextThemeButton" MinWidth="160" Height="34" Margin="0,0,8,8" Style="{StaticResource PrimaryButtonStyle}" Click="NextThemeButton_Click" ToolTip="Changer de thème en gardant la partie en cours">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8D2;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Theme suivant" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SaveButton" MinWidth="190" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="SaveButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Sauvegarder partie" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="FinishButton" MinWidth="120" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="FinishButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Terminer" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="ExportPdfButton" MinWidth="110" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8DE;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Export PDF" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
                 </Border>
 
-                <Border Grid.Row="2" Padding="14" Margin="0,0,0,12" BorderBrush="{StaticResource PanelBorderBrush}" Background="{StaticResource CardBackgroundBrush}" BorderThickness="1" CornerRadius="18" Effect="{StaticResource CardShadow}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                <TextBlock Text="Joueur" FontWeight="SemiBold"/>
-                                <TextBox x:Name="PlayerNameTextBox" Height="34" Margin="0,4,0,0" Style="{StaticResource InputTextBoxStyle}"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="1" Margin="0,0,12,0">
-                                <TextBlock Text="Rôle" FontWeight="SemiBold"/>
-                                <ComboBox x:Name="RoleComboBox" Height="34" Margin="0,4,0,0" SelectionChanged="RoleComboBox_SelectionChanged" Style="{StaticResource InputComboBoxStyle}"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="Thème" FontWeight="SemiBold"/>
-                                <ComboBox x:Name="ThemeComboBox" Height="34" Margin="0,4,0,0" SelectionChanged="ThemeComboBox_SelectionChanged" Style="{StaticResource InputComboBoxStyle}"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <WrapPanel Grid.Row="1" Margin="0,14,0,0" HorizontalAlignment="Right" ItemHeight="34">
-                            <Button x:Name="NewGameButton" MinWidth="165" Height="34" Margin="0,0,12,8" Style="{StaticResource PrimaryButtonStyle}" Click="NewGameButton_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Lancer partie" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                            <Button x:Name="ResumeGameButton" MinWidth="180" Height="34" Margin="0,0,12,8" Style="{StaticResource SecondaryButtonStyle}" Click="ResumeGameButton_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Reprendre partie" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                            <Button x:Name="SaveButton" MinWidth="190" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="SaveButton_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Sauvegarder partie" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                        </WrapPanel>
-                    </Grid>
-                </Border>
-
-                <Grid 
-                    x:Name="MainContentGrid" Grid.Row="3">
+                <Grid x:Name="MainContentGrid" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2.2*"/>
                         <ColumnDefinition Width="1.3*"/>
@@ -385,7 +430,13 @@
                                 <Button x:Name="SkipButton" MinWidth="160" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="SkipButton_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="&#xE893;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Question suivante" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Question suivante (bonus role)" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="NextThemeInlineButton" MinWidth="165" Height="34" Margin="0,0,8,8" Style="{StaticResource PrimaryButtonStyle}" Click="NextThemeButton_Click" ToolTip="Changer de thème en gardant la partie en cours">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE8D2;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Theme suivant" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
                                 <Button x:Name="DoubleButton" MinWidth="130" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="DoubleButton_Click">
@@ -406,7 +457,6 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
@@ -448,22 +498,7 @@
                                 <ListBox x:Name="HistoryListBox" Background="{StaticResource ListBackgroundBrush}" Foreground="#FFFFF1F3" BorderThickness="0"/>
                             </GroupBox>
 
-                            <WrapPanel Grid.Row="3" Margin="0,4,0,4">
-                                <Button x:Name="FinishButton" MinWidth="120" Height="34" Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Click="FinishButton_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Terminer" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button x:Name="ExportPdfButton" MinWidth="110" Height="34" Margin="0,0,0,8" Style="{StaticResource SecondaryButtonStyle}" Click="ExportPdfButton_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE8DE;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Export PDF" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
-                            </WrapPanel>
-
-                            <GroupBox Grid.Row="4" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFFFF1F3" BorderBrush="{StaticResource GroupBorderBrush}">
+                            <GroupBox Grid.Row="3" Header="Scores sauvegardés" MinHeight="160" Foreground="#FFFFF1F3" BorderBrush="{StaticResource GroupBorderBrush}">
                                 <DataGrid x:Name="ScoresDataGrid" AutoGenerateColumns="False" IsReadOnly="True" Background="{StaticResource DataGridBackgroundBrush}" Foreground="#FFFFFFFF" BorderThickness="0" GridLinesVisibility="Horizontal" RowBackground="{StaticResource DataGridRowBrush}" AlternatingRowBackground="{StaticResource DataGridAltRowBrush}" HorizontalGridLinesBrush="{StaticResource DataGridGridBrush}" VerticalGridLinesBrush="{StaticResource DataGridGridBrush}" AlternationCount="2">
                                     <DataGrid.ColumnHeaderStyle>
                                         <Style TargetType="DataGridColumnHeader">
@@ -516,7 +551,7 @@
                     </Border>
                 </Grid>
             </Grid>
-        </ScrollViewer>
+        </Grid>
 
         <StatusBar Grid.Row="1" Margin="0,10,0,0" Background="#2224A855" BorderBrush="{StaticResource PanelBorderBrush}" BorderThickness="1">
             <StatusBarItem>

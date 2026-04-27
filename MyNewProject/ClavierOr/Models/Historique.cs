@@ -34,6 +34,7 @@ public class Historique
 public enum TypeAction
 {
     NouvellePartie,
+    ThemeJoue,
     PartieTerminee,
     BossVaincu,
     NiveauGagne,
