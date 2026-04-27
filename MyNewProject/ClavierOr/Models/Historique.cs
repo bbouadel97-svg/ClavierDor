@@ -35,6 +35,7 @@ public enum TypeAction
 {
     NouvellePartie,
     ThemeJoue,
+    ThemeTermine,
     PartieTerminee,
     BossVaincu,
     NiveauGagne,

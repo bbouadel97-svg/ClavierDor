@@ -46,6 +46,7 @@ public partial class MainWindow : Window
 
     private void ShowHomePage()
     {
+        FiltrerThemesDisponibles();
         AnimatePageTransition(QuizPageGrid, HomePageGrid);
         _isQuizPageVisible = false;
     }
@@ -128,6 +129,27 @@ public partial class MainWindow : Window
 
     private void GererFinDeTheme()
     {
+        // Marquer le thème comme terminé → bloque tout futur accès même dans la même partie
+        if (_currentPlayer is not null && _currentTheme is not null)
+        {
+            _gameService.MarkThemeAsCompleted(_currentPlayer.Id, _currentTheme.Value);
+        }
+
+        var points = _currentScore?.Points ?? 0;
+        var pourcentage = _currentScore?.PourcentageReussite ?? 0;
+        var bonnes = _currentScore?.BonnesReponses ?? 0;
+        var mauvaises = _currentScore?.MauvaisesReponses ?? 0;
+
+        MessageBox.Show(
+            $"🎉 Bravo, vous avez terminé le thème \"{_currentTheme}\" !\n\n" +
+            $"✅ Bonnes réponses : {bonnes}\n" +
+            $"❌ Mauvaises réponses : {mauvaises}\n" +
+            $"⭐ Score : {points} pts\n" +
+            $"📊 Taux de réussite : {pourcentage:0.#} %",
+            "Thème terminé — Bien joué !",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+
         if (!ProposerNouveauTheme())
         {
             UpdateUiState();
@@ -211,19 +233,41 @@ public partial class MainWindow : Window
         RoleComboBox.SelectedIndex = 0;
     }
 
+    private static readonly ThemeItem[] TousLesThemes =
+    [
+        new ThemeItem(CategorieQuestion.Anglais, "Anglais (vocabulaire et traduction)"),
+        new ThemeItem(CategorieQuestion.LogiqueRaisonnement, "Logique et raisonnement"),
+        new ThemeItem(CategorieQuestion.AlgorithmiqueProgrammation, "Algorithmique et programmation"),
+        new ThemeItem(CategorieQuestion.CultureGenerale, "Culture generale"),
+        new ThemeItem(CategorieQuestion.MetiersInformatique, "Metiers de l'informatique")
+    ];
+
     private void ChargerThemes()
     {
-        ThemeComboBox.ItemsSource = new[]
-        {
-            new ThemeItem(CategorieQuestion.Anglais, "Anglais (vocabulaire et traduction)"),
-            new ThemeItem(CategorieQuestion.LogiqueRaisonnement, "Logique et raisonnement"),
-            new ThemeItem(CategorieQuestion.AlgorithmiqueProgrammation, "Algorithmique et programmation"),
-            new ThemeItem(CategorieQuestion.CultureGenerale, "Culture generale"),
-            new ThemeItem(CategorieQuestion.MetiersInformatique, "Metiers de l'informatique")
-        };
+        ThemeComboBox.ItemsSource = TousLesThemes;
         ThemeComboBox.DisplayMemberPath = nameof(ThemeItem.Label);
         ThemeComboBox.SelectedValuePath = nameof(ThemeItem.Value);
         ThemeComboBox.SelectedIndex = -1;
+    }
+
+    private void FiltrerThemesDisponibles()
+    {
+        var termines = _currentPlayer is not null
+            ? _gameService.GetThemesTermines(_currentPlayer.Id)
+            : new System.Collections.Generic.HashSet<CategorieQuestion>();
+
+        var disponibles = TousLesThemes
+            .Where(t => !termines.Contains(t.Value))
+            .ToArray();
+
+        var selected = ThemeComboBox.SelectedValue as CategorieQuestion?;
+        ThemeComboBox.ItemsSource = disponibles;
+
+        // Garder la sélection si le thème est encore disponible
+        if (selected.HasValue && disponibles.Any(t => t.Value == selected.Value))
+            ThemeComboBox.SelectedValue = selected.Value;
+        else
+            ThemeComboBox.SelectedIndex = -1;
     }
 
     private void NewGameButton_Click(object sender, RoutedEventArgs e)
@@ -309,12 +353,24 @@ public partial class MainWindow : Window
             return;
         }
 
-        _gameService.RegisterThemeForPartie(_currentPlayer.Id, _currentPartie.Id, theme);
+        var themeEstNouveau = _gameService.RegisterThemeForPartie(_currentPlayer.Id, _currentPartie.Id, theme);
         _currentScore = _gameService.ResumeOrCreateScore(player.Id, _currentPartie.Id);
         _currentQuestion = _gameService.GetCurrentQuestion(_currentPartie.Id, _currentTheme);
 
         if (_currentQuestion is null)
         {
+            // Si le thème était déjà enregistré pour cette partie et qu'il n'y a plus de questions
+            // → le thème a été terminé, on bloque l'accès (couvre aussi les anciennes données sans ThemeTermine)
+            if (!themeEstNouveau)
+            {
+                MessageBox.Show("Ce thème a déjà été joué par ce joueur. Choisissez un autre thème.");
+                FooterTextBlock.Text = "Thème déjà joué pour ce joueur.";
+                ShowHomePage();
+                UpdateUiState();
+                return;
+            }
+
+            // Nouveau thème sélectionné : l'index vient d'un thème précédent, on repart à 0
             _gameService.SetQuestionIndex(_currentPartie.Id, 0);
             _currentPartie.QuestionActuelleIndex = 0;
             _currentQuestion = _gameService.GetCurrentQuestion(_currentPartie.Id, _currentTheme);
@@ -326,13 +382,9 @@ public partial class MainWindow : Window
                 UpdateUiState();
                 return;
             }
+        }
 
-            AfficherQuestion(_currentQuestion);
-        }
-        else
-        {
-            AfficherQuestion(_currentQuestion);
-        }
+        AfficherQuestion(_currentQuestion);
 
         AjouterHistoriqueLocal($"Partie reprise - thème {_currentTheme}.");
         ShowQuizPage();

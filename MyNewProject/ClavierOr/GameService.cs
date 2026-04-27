@@ -404,6 +404,19 @@ public class GameService
         using var db = new ClavierOrContext();
         var themeToken = BuildThemeHistoryToken(theme);
 
+        // Si le thème a été marqué comme terminé (ThemeTermine), bloquer sans exception
+        var alreadyCompleted = db.Historiques
+            .AsNoTracking()
+            .Any(h => h.JoueurId == joueurId
+                   && h.Action == TypeAction.ThemeTermine
+                   && h.Description == themeToken);
+
+        if (alreadyCompleted)
+        {
+            return true;
+        }
+
+        // Sinon vérifier ThemeJoue (permet la reprise à mi-thème dans la même partie)
         var query = db.Historiques
             .AsNoTracking()
             .Where(h => h.JoueurId == joueurId && h.Action == TypeAction.ThemeJoue && h.Description == themeToken);
@@ -416,7 +429,8 @@ public class GameService
         return query.Any();
     }
 
-    public void RegisterThemeForPartie(int joueurId, int partieId, CategorieQuestion theme)
+    /// <returns>true si le thème vient d'être enregistré (nouveau), false s'il était déjà enregistré pour cette partie.</returns>
+    public bool RegisterThemeForPartie(int joueurId, int partieId, CategorieQuestion theme)
     {
         using var db = new ClavierOrContext();
         var themeToken = BuildThemeHistoryToken(theme);
@@ -430,7 +444,7 @@ public class GameService
 
         if (exists)
         {
-            return;
+            return false; // déjà enregistré = thème déjà commencé ou terminé dans cette partie
         }
 
         db.Historiques.Add(new Historique(joueurId, TypeAction.ThemeJoue, themeToken)
@@ -439,6 +453,42 @@ public class GameService
             DateAction = DateTime.Now
         });
         db.SaveChanges();
+        return true;
+    }
+
+    public void MarkThemeAsCompleted(int joueurId, CategorieQuestion theme)
+    {
+        using var db = new ClavierOrContext();
+        var themeToken = BuildThemeHistoryToken(theme);
+
+        // Enregistrement sans PartieId → ne sera jamais exclu par partieIdToAllow
+        db.Historiques.Add(new Historique(joueurId, TypeAction.ThemeTermine, themeToken)
+        {
+            DateAction = DateTime.Now
+        });
+        db.SaveChanges();
+    }
+
+    public HashSet<CategorieQuestion> GetThemesTermines(int joueurId)
+    {
+        using var db = new ClavierOrContext();
+        var prefix = ThemeHistoryPrefix;
+        var tokens = db.Historiques
+            .AsNoTracking()
+            .Where(h => h.JoueurId == joueurId && h.Action == TypeAction.ThemeTermine)
+            .Select(h => h.Description)
+            .ToList();
+
+        var result = new HashSet<CategorieQuestion>();
+        foreach (var token in tokens)
+        {
+            var name = token.StartsWith(prefix) ? token[prefix.Length..] : token;
+            if (Enum.TryParse<CategorieQuestion>(name, out var cat))
+            {
+                result.Add(cat);
+            }
+        }
+        return result;
     }
 
     public Score CreateScore(int joueurId, int partieId)
